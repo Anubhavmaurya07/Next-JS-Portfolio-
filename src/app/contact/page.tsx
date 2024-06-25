@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import { motion } from "framer-motion";
 
-import axios from 'axios';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +12,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectLabel, SelectGroup, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import {FaPhoneAlt, FaEnvelope, FaMapMarkerAlt} from 'react-icons/fa';
-import { sendEmail } from '@/actions/sendEmail';
 
 const info = [
   {
@@ -67,25 +65,34 @@ export default function Contact() {
   }
   const handleSubmit = async (e: HandleSubmitEvent) => {
     e.preventDefault();
-    console.log(formData);
-    
     try {
-      const result = await sendEmail(formData);
-      if (result && result.error) {
-          console.error("Error sending email:", result.error);
-          // Optionally, show an error message to the user
-      } else {
-          console.log("Email sent successfully:", result);
-          // Optionally, show a success message to the user
-          setFormData(initialFormData); // Reset form only if email is sent successfully
-      }
-  } catch (error) {
-      console.error("Unexpected error:", error);
-      // Optionally, show an unexpected error message to the user
-  }
+      const response = await fetch('/api/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    setFormData(initialFormData);
-  }
+      if (!response.ok) {
+        alert('Failed to send email');
+        return;
+      }
+
+      const result = await response.json().catch(() => ({}));
+
+      if (result.success) {
+        alert('Email sent successfully');
+        setFormData(initialFormData); // Reset form data
+      } else {
+        alert('Failed to send email');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Error sending email');
+    }
+  };
+  
     return (
       <motion.section
         initial={{opacity: 0}}
