@@ -1,7 +1,7 @@
 'use client';
 import Image from "next/image";
 import { motion } from "framer-motion";
-import imgage from '../../public/profile.jpeg';
+import imgage from '../../public/profile.png';
 
 const Photo = () => {
   return (
@@ -24,7 +24,7 @@ const Photo = () => {
                 className="relative"
             >
                 <div className="w-[278px] h-[278px] xl:w-[478px] xl:h-[478px] p-2 xl:p-2.5 mix-blend-lighten">
-                    <Image src={imgage} priority fill quality={100} alt="" className="object-contain" />
+                    <Image src={imgage} priority fill quality={100} alt="Profile photo" className="object-contain" />
                 </div>
             </motion.div>
 

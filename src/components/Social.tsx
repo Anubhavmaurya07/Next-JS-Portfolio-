@@ -8,7 +8,12 @@ const socials = [
     {icon : <FaInstagram />, path: ""},
 ]
 
-const Social = ({containerSyles, iconStyles}) => {
+interface SocialProps {
+  containerSyles: string;
+  iconStyles: string;
+}
+
+const Social = ({containerSyles, iconStyles}: SocialProps) => {
   return (
     <div className={containerSyles}>
         {socials.map((item, index) => (
