@@ -4,11 +4,12 @@ import "./globals.css";
 import Header from "@/components/Header";
 import PageTransition from "@/components/PageTransition";
 import StairTransition from "@/components/StairTransition";
+import ReactQueryProvider from "@/lib/ReactQueryProvider";
 
-const jetbrainsMono = JetBrains_Mono({ 
-  subsets: ["latin"], 
-  weight: ["100", "200", "300", "400", "500", "600", "700" ],
-  variable : "--font-jetbrainsMono"
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  variable: "--font-jetbrainsMono"
 });
 
 export const metadata: Metadata = {
@@ -24,11 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={jetbrainsMono.variable}>
-        <Header />
-        <StairTransition />
-        <PageTransition>
-          {children}
-        </PageTransition>
+        <ReactQueryProvider>
+          <Header />
+          <StairTransition />
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </ReactQueryProvider>
       </body>
     </html>
   );

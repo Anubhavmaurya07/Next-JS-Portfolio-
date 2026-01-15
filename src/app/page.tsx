@@ -15,7 +15,7 @@ export default function Home() {
 
           {/* text */}
           <div className="text-center xl:text-left order-2 xl:order-none">
-            <span className="text-xl">Web Developer</span>
+            <span className="text-xl">Software Engineer</span>
             <h1 className="h1 mb-6">
               Hello I&apos;m <br /> <span className="text-accent">
                 <TypeAnimation 
@@ -26,9 +26,11 @@ export default function Home() {
                     1000, 
                     'Web Developer',
                     1000, 
+                    'Software Developer',
+                    1000, 
                     'App Developer',
                     1000, 
-                    'UI/UX Designer',
+                    'Backend Developer',
                     1000, 
                   ]}
                   wrapper="span"
