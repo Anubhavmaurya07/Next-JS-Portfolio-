@@ -34,7 +34,7 @@ const info = [
     icon: <FaMapMarkerAlt />,
     title: "Address",
     discription:
-      "Opposite to Cherish Studio, Rathodi Village, Malad West, Mumbai 400095",
+      "Opposite to Cherish Studio, Rathodi Village, Malad West, Mumbai, Maharashtra - 400095",
   },
 ];
 
@@ -90,6 +90,11 @@ export default function Contact() {
           title: "Email Sent Successfully!",
           description: "You will be notified as soon as possible.",
         });
+        if (typeof window !== "undefined") {
+          const audio = new Audio("/success_audio.mp3");
+          audio.volume = 1;
+          audio.play();
+        }
         setIsSuccess(true);
         setFormData(initialFormData);
       } else {
@@ -145,8 +150,7 @@ export default function Contact() {
               >
                 <h3 className="text-4xl text-accent">Let&apos;s work together</h3>
                 <p className="text-white/60">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. A fuga
-                  accusamus iure dolor quidem pariatur
+                  Have a project in mind or want to collaborate? Fill out the form below, and I&apos;ll get back to you as soon as possible. Let’s turn your ideas into something impactful!
                 </p>
 
                 {/* input */}
@@ -284,11 +288,10 @@ export default function Contact() {
                 exit={{ x: 500 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 className={`flex items-start gap-3 p-4 rounded-xl shadow-2xl backdrop-blur-md border
-              ${
-                isSuccess
-                  ? "bg-gradient-to-r from-emerald-500/20 to-green-400/10 border-emerald-500/30"
-                  : "bg-gradient-to-r from-rose-500/20 to-red-400/10 border-rose-500/30"
-              }`}
+              ${isSuccess
+                    ? "bg-gradient-to-r from-emerald-500/20 to-green-400/10 border-emerald-500/30"
+                    : "bg-gradient-to-r from-rose-500/20 to-red-400/10 border-rose-500/30"
+                  }`}
               >
                 <div className="flex-shrink-0 mt-1">
                   {isSuccess ? (
@@ -300,9 +303,8 @@ export default function Contact() {
 
                 <div className="flex-1">
                   <Toast.Title
-                    className={`font-semibold ${
-                      isSuccess ? "text-emerald-300" : "text-rose-300"
-                    }`}
+                    className={`font-semibold ${isSuccess ? "text-emerald-300" : "text-rose-300"
+                      }`}
                   >
                     {toastData.title}
                   </Toast.Title>

@@ -6,30 +6,34 @@ import { motion } from 'framer-motion';
 
 const services = [
   {
-    num : '01',
-    title : "Web Development",
-    description : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi quasi nobis possimus",
-    href : "",
+    num: '01',
+    title: "Web Development",
+    description:
+      "I build fast, responsive, and scalable web applications with clean architecture and modern technologies that deliver a seamless user experience across all devices.",
+    href: "",
   },
   {
-    num : '02',
-    title : "SEO Specialist",
-    description : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi quasi nobis possimus",
-    href : "",
+    num: '02',
+    title: "Frontend Development",
+    description:
+      "Specializing in creating dynamic, interactive, and visually appealing user interfaces using React, Next.js, and Tailwind CSS — optimized for performance and accessibility.",
+    href: "",
   },
   {
-    num : '03',
-    title : "App Development",
-    description : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi quasi nobis possimus",
-    href : "",
+    num: '03',
+    title: "App Development",
+    description:
+      "From concept to deployment, I craft high-performing cross-platform web apps with smooth user interactions, reliable architecture, and intuitive design flow.",
+    href: "",
   },
   {
-    num : '04',
-    title : "UI/UX Design",
-    description : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi quasi nobis possimus",
-    href : "",
+    num: '04',
+    title: "Backend Development",
+    description:
+      "I design and develop robust backend systems and RESTful APIs with Node.js and MongoDB, ensuring security, scalability, and smooth integration with frontend applications.",
+    href: "",
   },
-]
+];
 
 
 

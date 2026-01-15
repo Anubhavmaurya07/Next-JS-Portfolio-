@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 // about data
 const about = {
   title: "About me",
-  description : "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum minima recusandae",
+  description : "Passionate Software Engineer crafting high-performance, scalable web solutions that blend clean architecture with real-world impact. Obsessed with turning complex problems into elegant digital experiences.",
   info : [
     {
       fieldName : "Name",
@@ -19,11 +19,11 @@ const about = {
     },
     {
       fieldName : "Phone",
-      fieldValue : "(+ 91) 7068220038",
+      fieldValue : "(+91) 7068220038",
     },
     {
       fieldName : "Experience",
-      fieldValue : "4+ Years (6 Months Industry)",
+      fieldValue : `${new Date().getFullYear() - 2023}`,
     },
     {
       fieldName : "Nationality",
@@ -31,7 +31,7 @@ const about = {
     },
     {
       fieldName : "Email",
-      fieldValue : "anubhavmaurya8521@gmail.com",
+      fieldValue : "amanubhav8521@gmail.com",
     },
     {
       fieldName : "Freelance ",
@@ -47,37 +47,22 @@ const about = {
 // experience data
 const experience = {
   title : "My Experience",
-  description : "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum minima recusandae",
+  description : `Full Stack Developer with ${new Date().getFullYear() - 2023} years of hands-on experience building scalable web applications using modern frameworks and clean, maintainable code.`,
   items : [
     {
       company : "DigiLateral Solution",
-      position : "MERN Stack Developer",
+      position : "Backend Developer Intern",
       duration : "6 Months",
     },
     {
-      company : "DigiLateral Solution",
-      position : "MERN Stack Developer",
+      company : "Xircls Pvt Ltd",
+      position : "Frontend Developer Intern",
       duration : "6 Months",
     },
     {
-      company : "DigiLateral Solution",
+      company : "Binnys Jewellery Pvt Ltd",
       position : "MERN Stack Developer",
-      duration : "6 Months",
-    },
-    {
-      company : "DigiLateral Solution",
-      position : "MERN Stack Developer",
-      duration : "6 Months",
-    },
-    {
-      company : "DigiLateral Solution",
-      position : "MERN Stack Developer",
-      duration : "6 Months",
-    },
-    {
-      company : "DigiLateral Solution",
-      position : "MERN Stack Developer",
-      duration : "6 Months",
+      duration : "May 2025 - Present",
     },
   ]
 };
@@ -85,7 +70,7 @@ const experience = {
 // education data
 const education = {
   title : "My Education",
-  description : "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum minima recusandae",
+  description : "Graduated with a B.Sc in Information Technology, where I developed a deep understanding of modern software systems and honed my skills in full-stack web development through hands-on projects and research.",
   items : [
     {
       institution : "CBSE",
@@ -111,7 +96,7 @@ const education = {
 // skills data
 const skills = {
   title : "My Skills",
-  description : "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum minima recusandae",
+  description : "Skilled Full Stack Developer with expertise in React, Next.js, Node.js, and MongoDB, delivering scalable and high-performance web applications. Proficient in DevOps workflows, API design, and crafting seamless UI/UX experiences.",
   items : [
     {
       icon : <FaHtml5 />,
