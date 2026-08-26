@@ -1,37 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Anubhav Maurya — Portfolio
 
-## Getting Started
+Personal portfolio site built with the Next.js App Router.
 
-First, run the development server:
+**Stack:** Next.js 14 · TypeScript · Tailwind CSS · shadcn/ui (Radix) · Framer Motion · React Query · Resend
+
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local   # fill in your keys
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> The app builds without `RESEND_API_KEY` — the contact endpoint simply returns
+> `503` until one is set.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Environment
 
-## Learn More
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `RESEND_API_KEY` | for the contact form | Resend API key |
+| `CONTACT_FROM_EMAIL` | recommended | Verified sender. Defaults to Resend's sandbox address, which only delivers to your own verified inbox |
+| `CONTACT_TO_EMAIL` | optional | Where enquiries land. Defaults to the address in `src/lib/site.ts` |
+| `NEXT_PUBLIC_SITE_URL` | in production | Origin used for canonical URLs, OG tags and `sitemap.xml` |
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Dev server |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run lint` | ESLint |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Structure
 
-## Deploy on Vercel
+```
+src/
+  app/                 routes (home, services, resume, contact) + api/emails
+    opengraph-image.tsx  generated social preview card
+    sitemap.ts / robots.ts
+  components/          Header, Nav, Photo, Social, Stats, transitions
+    ui/                shadcn primitives
+  email/               React Email template for form submissions
+  lib/site.ts          name, role, description, URL — single source of truth
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Site identity lives in [`src/lib/site.ts`](src/lib/site.ts); metadata, the OG
+card and the sitemap all read from it.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# Next-JS-Portfolio-
+## Deployment
+
+Deployed on Vercel. Set the environment variables above in the project settings.

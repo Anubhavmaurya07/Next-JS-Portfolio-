@@ -24,12 +24,13 @@ const MobileNav = () => {
       <SheetTrigger asChild>
         <button 
           className='flex justify-center items-center' 
+          aria-label="Open menu"
           onClick={handleSheetToggle}
         >
           <CiMenuFries className='text-3xl text-accent' />
         </button>
       </SheetTrigger>
-      <SheetContent onClick={handleCloseSheet}>
+      <SheetContent>
         {/* logo */}
         <div className='mt-32 mb-40 text-center text-2xl'>
           <Link href={"/"}>
@@ -44,6 +45,7 @@ const MobileNav = () => {
             <Link 
               key={index} 
               href={link.path} 
+              aria-current={link.path === pathName ? "page" : undefined}
               className={`${link.path === pathName && 'text-accent border-b-2 border-accent'} text-xl capitalize hover:text-accent transition-all`}
               onClick={handleCloseSheet}
             >
