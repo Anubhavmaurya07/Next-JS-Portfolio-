@@ -18,23 +18,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import { siteConfig } from "@/lib/site";
 
 const info = [
   {
     icon: <FaPhoneAlt />,
     title: "Phone",
-    discription: "(+91) 7068220038",
+    description: siteConfig.phone,
   },
   {
     icon: <FaEnvelope />,
     title: "Email",
-    discription: "anubhavmaurya8521@gmail.com",
+    description: siteConfig.email,
   },
   {
     icon: <FaMapMarkerAlt />,
-    title: "Address",
-    discription:
-      "Opposite to Cherish Studio, Rathodi Village, Malad West, Mumbai, Maharashtra - 400095",
+    title: "Location",
+    // Deliberately city-level: a street address on a public page next to a
+    // phone number and photo is an unnecessary personal-safety exposure.
+    description: "Mumbai, Maharashtra, India",
   },
 ];
 
@@ -45,6 +47,7 @@ export type FormData = {
   phone: string;
   service: string;
   message: string;
+  website?: string; // honeypot — must stay empty
 };
 
 export default function Contact() {
@@ -55,6 +58,7 @@ export default function Contact() {
     phone: "",
     service: "",
     message: "",
+    website: "",
   };
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -81,8 +85,11 @@ export default function Contact() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error("Failed to send email");
-      return response.json();
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(result?.error || "Failed to send email");
+      }
+      return result;
     },
     onSuccess: (result) => {
       if (result.success) {
@@ -93,14 +100,15 @@ export default function Contact() {
         if (typeof window !== "undefined") {
           const audio = new Audio("/success_audio.mp3");
           audio.volume = 1;
-          audio.play();
+          // Browsers block autoplay without a gesture — ignore the rejection.
+          audio.play().catch(() => {});
         }
         setIsSuccess(true);
         setFormData(initialFormData);
       } else {
         setToastData({
           title: "Failed to send email",
-          description: "Retry later sorry for inconvenience",
+          description: result?.error || "Retry later, sorry for the inconvenience.",
         });
         setIsSuccess(false);
       }
@@ -110,7 +118,7 @@ export default function Contact() {
       console.error("Error sending email:", error);
       setToastData({
         title: "Error in sending email",
-        description: "Retry later sorry for inconvenience",
+        description: error?.message || "Retry later, sorry for the inconvenience.",
       });
       setIsSuccess(false);
       setOpen(true);
@@ -119,6 +127,19 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Radix Select is not a native form control, so `required` on it does
+    // nothing — the browser will happily submit with no service chosen.
+    if (!formData.service) {
+      setToastData({
+        title: "Please select a service",
+        description: "Choose what you need help with before sending.",
+      });
+      setIsSuccess(false);
+      setOpen(true);
+      return;
+    }
+
     sendEmailMutation.mutate(formData);
   };
 
@@ -128,7 +149,7 @@ export default function Contact() {
         initial={{ opacity: 0 }}
         animate={{
           opacity: 1,
-          transition: { delay: 1.4, duration: 0.4, ease: "easeIn" },
+          transition: { delay: 0.15, duration: 0.4, ease: "easeIn" },
         }}
         className="py-6"
       >
@@ -141,7 +162,7 @@ export default function Contact() {
               animate={{
                 opacity: 1,
                 x: 0,
-                transition: { delay: 1.4, duration: 0.4, ease: "easeIn" },
+                transition: { delay: 0.15, duration: 0.4, ease: "easeIn" },
               }}
             >
               <form
@@ -152,6 +173,18 @@ export default function Contact() {
                 <p className="text-white/60">
                   Have a project in mind or want to collaborate? Fill out the form below, and I&apos;ll get back to you as soon as possible. Let’s turn your ideas into something impactful!
                 </p>
+
+                {/* honeypot: hidden from humans, bots fill it in and get silently dropped */}
+                <input
+                  type="text"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute left-[-9999px] w-px h-px opacity-0"
+                />
 
                 {/* input */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -250,7 +283,7 @@ export default function Contact() {
               animate={{
                 opacity: 1,
                 x: 0,
-                transition: { delay: 1.4, duration: 0.4, ease: "easeIn" },
+                transition: { delay: 0.15, duration: 0.4, ease: "easeIn" },
               }}
             >
               <ul className="flex flex-col gap-10">
@@ -261,7 +294,7 @@ export default function Contact() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-white/60">{item.title}</h3>
-                      <p className="text-xl">{item.discription}</p>
+                      <p className="text-xl">{item.description}</p>
                     </div>
                   </li>
                 ))}
