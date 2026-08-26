@@ -4,32 +4,36 @@ import Link from "next/link";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaGithub, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
+import { siteConfig } from "@/lib/site";
 
+// Only entries with a real `path` are rendered — an icon that links nowhere is
+// worse than no icon at all. Fill in a URL to bring one back.
 const socials = [
-  { icon: <FaGithub />, path: "https://github.com/Anubhavmaurya07", title: "GitHub" },
-  { icon: <FaLinkedin />, path: "", title: "LinkedIn" },
+  { icon: <FaLinkedin />, path: siteConfig.linkedin, title: "LinkedIn" },
+  { icon: <FaGithub />, path: siteConfig.github, title: "GitHub" },
   { icon: <FaFacebook />, path: "", title: "Facebook" },
   { icon: <FaInstagram />, path: "", title: "Instagram" },
-];
+].filter((s) => s.path);
 
 interface SocialProps {
-  containerSyles: string;
+  containerStyles: string;
   iconStyles: string;
 }
 
-const Social = ({ containerSyles, iconStyles }: SocialProps) => {
+const Social = ({ containerStyles, iconStyles }: SocialProps) => {
   return (
     <Tooltip.Provider delayDuration={100}>
-      <div className={containerSyles}>
+      <div className={containerStyles}>
         {socials.map((item, index) => (
           <Tooltip.Root key={index}>
             {/* Trigger */}
             <Tooltip.Trigger asChild>
               <Link
-                href={item.path || "#"}
+                href={item.path}
                 className={iconStyles}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={item.title}
               >
                 {item.icon}
               </Link>
