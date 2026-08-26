@@ -1,7 +1,6 @@
 'use client';
 import Image from "next/image";
 import { motion } from "framer-motion";
-import imgage from '../../public/profile.png';
 
 const Photo = () => {
   return (
@@ -10,7 +9,7 @@ const Photo = () => {
             initial={{ opacity: 0 }}
             animate={{
                 opacity: 1,
-                transition: { delay: 2, duration: 0.4, ease: "easeIn" }
+                transition: { delay: 0.1, duration: 0.4, ease: "easeIn" }
             }}
             className="relative"
         >
@@ -19,17 +18,28 @@ const Photo = () => {
                 initial={{ opacity: 0 }}
                 animate={{
                     opacity: 1,
-                    transition: { delay: 2.4, duration: 0.4, ease: "easeInOut" }
+                    transition: { delay: 0.25, duration: 0.4, ease: "easeInOut" }
                 }}
                 className="relative"
             >
-                <div className="w-[278px] h-[278px] xl:w-[478px] xl:h-[478px] p-2 xl:p-2.5 mix-blend-lighten">
-                    <Image src={imgage} priority fill quality={100} alt="Profile photo" className="object-contain" />
+                {/* Clipped to a circle: the photo is a square crop that fills its
+                    frame, so without this the shoulders spill past the ring. */}
+                <div className="relative w-[278px] h-[278px] xl:w-[478px] xl:h-[478px] rounded-full overflow-hidden">
+                    <Image
+                        src="/profile.png"
+                        alt="Anubhav Maurya"
+                        fill
+                        priority
+                        quality={100}
+                        sizes="(max-width: 1280px) 278px, 478px"
+                        className="object-cover"
+                    />
                 </div>
             </motion.div>
 
             {/* Circle */}
             <motion.svg
+                aria-hidden="true"
                 className="w-[300px] xl:w-[506px] h-[300px] xl:h-[506px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 fill="transparent"
                 viewBox="0 0 506 506"

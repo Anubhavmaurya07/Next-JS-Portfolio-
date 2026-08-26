@@ -1,43 +1,44 @@
-"use client";
+import StatsCounter, { type Stat } from "./StatsCounter";
+import { getGithubStats } from "@/lib/github";
+import {
+  GITHUB_ACCOUNTS,
+  shippedSystems,
+  technologyCount,
+  yearsOfExperience,
+} from "@/lib/site";
 
-import CountUp from 'react-countup';
+// Server component: GitHub is queried once at build time and revalidated
+// daily, so visitors never pay for the request and the rate limit is never
+// hit by traffic.
+const Stats = async () => {
+  const github = await getGithubStats(GITHUB_ACCOUNTS);
 
-const stats = [
-  {
-    num: new Date().getFullYear() - 2023,
-    text : "Years of experience"
-  },
-  {
-    num: 16,
-    text : "Projects Completed"
-  },
-  {
-    num: 8,
-    text : "Technologies mastered"
-  },
-  {
-    num: 200,
-    text : "Code commits"
-  },
-]
+  const stats: Stat[] = [
+    { num: yearsOfExperience(), suffix: "+", text: "Years of experience" },
+    { num: shippedSystems, text: "Production systems shipped" },
+    {
+      num: github?.repos ?? 0,
+      text: "Public repositories",
+    },
+    { num: technologyCount, text: "Technologies" },
+  ];
 
-const Stats = () => {
+  // A zero repo count means the lookup failed or the accounts are private —
+  // either way, showing "0" is worse than showing nothing.
+  const visible = stats.filter((stat) => stat.num > 0);
+
+  // Stars only earn a tile when there are actually some to show.
+  if (github && github.stars > 0) {
+    visible.splice(3, 0, { num: github.stars, text: "GitHub stars" });
+  }
+
   return (
-    <section className='pt-4 pb-12 xl:pt-0 xl:pb-0'>
+    <section className="pt-4 pb-12 xl:pt-0 xl:pb-0">
       <div className="container mx-auto">
-        <div className='flex flex-wrap gap-6 max-w-[80vw] mx-auto xl:max-w-none'>
-          {stats.map((item, index) => (
-            <div 
-              className='flex-1 flex gap-4 items-center justify-center xl:justify-start' 
-              key={index}>
-              <CountUp end={item.num} duration={5} delay={2} className='text-4xl xl:text-6xl font-extrabold'/>
-              <p className={`${item.text.length < 15 ? "max-w-[100px]" : "max-w-[150px]"} leading-snug text-white/80`}>{item.text}</p>
-            </div>
-          ))}
-        </div>
+        <StatsCounter stats={visible.slice(0, 4)} />
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Stats
+export default Stats;
