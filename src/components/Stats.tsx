@@ -1,41 +1,26 @@
 import StatsCounter, { type Stat } from "./StatsCounter";
-import { getGithubStats } from "@/lib/github";
 import {
-  GITHUB_ACCOUNTS,
+  companiesWorkedWith,
+  countriesInUse,
   shippedSystems,
-  technologyCount,
   yearsOfExperience,
 } from "@/lib/site";
 
-// Server component: GitHub is queried once at build time and revalidated
-// daily, so visitors never pay for the request and the rate limit is never
-// hit by traffic.
-const Stats = async () => {
-  const github = await getGithubStats(GITHUB_ACCOUNTS);
-
+// Numbers chosen for business owners, not developers: a client cares how much
+// real work has shipped and where it runs, not how many GitHub repos or stars
+// there are. (src/lib/github.ts is still there if those are wanted back.)
+const Stats = () => {
   const stats: Stat[] = [
-    { num: yearsOfExperience(), suffix: "+", text: "Years of experience" },
-    { num: shippedSystems, text: "Production systems shipped" },
-    {
-      num: github?.repos ?? 0,
-      text: "Public repositories",
-    },
-    { num: technologyCount, text: "Technologies" },
+    { num: yearsOfExperience(), suffix: "+", text: "Years building for businesses" },
+    { num: shippedSystems, text: "Systems built & shipped" },
+    { num: companiesWorkedWith, text: "Companies I've built for" },
+    { num: countriesInUse, text: "Countries my software runs in" },
   ];
-
-  // A zero repo count means the lookup failed or the accounts are private —
-  // either way, showing "0" is worse than showing nothing.
-  const visible = stats.filter((stat) => stat.num > 0);
-
-  // Stars only earn a tile when there are actually some to show.
-  if (github && github.stars > 0) {
-    visible.splice(3, 0, { num: github.stars, text: "GitHub stars" });
-  }
 
   return (
     <section className="pt-4 pb-12 xl:pt-0 xl:pb-0">
       <div className="container mx-auto">
-        <StatsCounter stats={visible.slice(0, 4)} />
+        <StatsCounter stats={stats.filter((stat) => stat.num > 0)} />
       </div>
     </section>
   );
