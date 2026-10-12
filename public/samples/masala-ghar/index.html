@@ -43,6 +43,8 @@
   .logo { display: flex; align-items: baseline; gap: 10px; text-decoration: none; }
   .logo b { font: 700 1.6rem/1 "Zilla Slab", serif; }
   .logo span { font-size: 1.05rem; color: #c9cff0; }
+  .logo, .bag-btn { white-space: nowrap; }
+  @media (max-width: 480px) { .logo span { display: none; } .hero { padding-top: 40px; } }
   .bag-btn { font: 600 16px "Hind", sans-serif; background: #fff; color: var(--indigo); border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; }
   .bag-btn .count { background: var(--turmeric); color: var(--ink); min-width: 24px; height: 24px; border-radius: 12px; display: inline-grid; place-items: center; font-size: 14px; padding: 0 6px; }
 
@@ -56,7 +58,7 @@
   .btn.line { background: none; color: var(--indigo); }
   .btn.line:hover { background: var(--stone); }
   .btn svg { width: 19px; height: 19px; }
-  @media (max-width: 880px) { .hero .wrap { grid-template-columns: 1fr; } .dabba-fig { order: -1; } }
+  @media (max-width: 880px) { .hero .wrap { grid-template-columns: 1fr; gap: 44px; } .dabba { width: min(100%, 300px); } }
 
   .dabba-fig { margin: 0; }
   .dabba { position: relative; width: min(100%, 420px); aspect-ratio: 1; margin-inline: auto; border-radius: 50%;
