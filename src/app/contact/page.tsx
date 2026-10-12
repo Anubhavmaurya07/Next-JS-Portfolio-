@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Toast from "@radix-ui/react-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
@@ -17,19 +17,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
-import { siteConfig } from "@/lib/site";
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
+import { siteConfig, whatsappLink } from "@/lib/site";
+import { SERVICE_OPTIONS } from "@/lib/services";
 
-const info = [
+const info: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  href?: string;
+  external?: boolean;
+}[] = [
+  {
+    icon: <FaWhatsapp />,
+    title: "WhatsApp (fastest reply)",
+    description: "Chat with me now",
+    href: whatsappLink(),
+    external: true,
+  },
   {
     icon: <FaPhoneAlt />,
     title: "Phone",
     description: siteConfig.phone,
+    href: `tel:+${siteConfig.whatsapp}`,
   },
   {
     icon: <FaEnvelope />,
     title: "Email",
     description: siteConfig.email,
+    href: `mailto:${siteConfig.email}`,
   },
   {
     icon: <FaMapMarkerAlt />,
@@ -65,6 +81,15 @@ export default function Contact() {
   const [open, setOpen] = useState(false);
   const [toastData, setToastData] = useState({ title: "", description: "" });
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // Links from the services page arrive as /contact?service=..., so the
+  // service the visitor was just reading about is already selected.
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("service");
+    if (requested && (SERVICE_OPTIONS as readonly string[]).includes(requested)) {
+      setFormData((current) => ({ ...current, service: requested }));
+    }
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -171,7 +196,7 @@ export default function Contact() {
               >
                 <h3 className="text-4xl text-accent">Let&apos;s work together</h3>
                 <p className="text-white/60">
-                  Have a project in mind or want to collaborate? Fill out the form below, and I&apos;ll get back to you as soon as possible. Let’s turn your ideas into something impactful!
+                  Tell me a little about your business and what you need. I&apos;ll get back to you with ideas and a free quote — no technical knowledge needed. Prefer to chat? Message me on WhatsApp.
                 </p>
 
                 {/* honeypot: hidden from humans, bots fill it in and get silently dropped */}
@@ -233,20 +258,12 @@ export default function Contact() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select a Service</SelectLabel>
-                      <SelectItem value="Web Development">
-                        Web Development
-                      </SelectItem>
-                      <SelectItem value="Software Development">
-                        Software Development
-                      </SelectItem>
-                      <SelectItem value="Frontend Development">
-                        Frontend Development
-                      </SelectItem>
-                      <SelectItem value="Backend Development">
-                        Backend Development
-                      </SelectItem>
-                      <SelectItem value="Web Apps">Web Apps</SelectItem>
+                      <SelectLabel>What do you need?</SelectLabel>
+                      {SERVICE_OPTIONS.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -254,7 +271,7 @@ export default function Contact() {
                 {/* textarea */}
                 <Textarea
                   className="h-[200px]"
-                  placeholder="Type your message here.."
+                  placeholder="What does your business do, and what would you like the website or software to do for you?"
                   name="message"
                   onChange={handleChange}
                   required
@@ -294,7 +311,19 @@ export default function Contact() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-white/60">{item.title}</h3>
-                      <p className="text-xl">{item.description}</p>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="text-xl hover:text-accent transition-colors break-all"
+                          {...(item.external
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                        >
+                          {item.description}
+                        </a>
+                      ) : (
+                        <p className="text-xl">{item.description}</p>
+                      )}
                     </div>
                   </li>
                 ))}
