@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { projects } from "@/lib/projects";
+import { samples } from "@/lib/samples";
 
 export default function Projects() {
   const [active, setActive] = useState(0);
@@ -159,6 +160,51 @@ export default function Projects() {
               </div>
             </div>
           )}
+        </div>
+
+        {/* sample websites */}
+        <div className="mt-24 xl:mt-32" id="samples">
+          <div className="max-w-[640px] mb-10">
+            <h2 className="h2 mb-4">
+              Sample websites<span className="text-accent">.</span>
+            </h2>
+            <p className="text-white/60">
+              Websites I designed and built for made-up businesses, to show
+              what yours could look like. Open one and try it — book a slot,
+              order from the menu, fill a shopping bag.
+            </p>
+          </div>
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {samples.map((sample) => (
+              <li key={sample.slug}>
+                <a
+                  href={`/samples/${sample.slug}`}
+                  target="_blank"
+                  rel="noopener"
+                  className="group flex flex-col h-full rounded-xl bg-[#27272c] border border-white/10 hover:border-accent transition-colors overflow-hidden"
+                >
+                  <div className="flex h-24" aria-hidden="true">
+                    <span className="flex-[3]" style={{ background: sample.swatch[0] }} />
+                    <span className="flex-[2]" style={{ background: sample.swatch[1] }} />
+                    <span className="flex-1" style={{ background: sample.swatch[2] }} />
+                  </div>
+                  <div className="flex flex-col gap-3 p-6 flex-1">
+                    <p className="text-accent text-sm">{sample.kind}</p>
+                    <h3 className="text-2xl font-bold text-white group-hover:text-accent transition-colors">
+                      {sample.name}
+                    </h3>
+                    <p className="text-white/60 text-sm leading-relaxed flex-1">
+                      {sample.description}
+                    </p>
+                    <span className="inline-flex items-center gap-2 text-white font-semibold mt-2">
+                      Open the sample
+                      <BsArrowUpRight className="text-accent" aria-hidden="true" />
+                    </span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </motion.section>

@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Café Shirin, Dadar — sample website</title>
+<meta name="description" content="Sample restaurant website by Anubhav Maurya: a made-up Irani café with a full menu, WhatsApp ordering, timings and location.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1d4a3a;
+    --green-deep: #143528;
+    --marble: #f5f5f2;
+    --marble-vein: #e6e6e1;
+    --brass: #b8902f;
+    --brass-light: #d9b866;
+    --red: #b3262e;
+    --ink: #1a1a1a;
+    --muted: #5d625e;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+  body { margin: 0; background: var(--marble); color: var(--ink); font: 400 17px/1.6 "Karla", system-ui, sans-serif; }
+  h1, h2, h3 { margin: 0; font-weight: 400; }
+  h2 { font: 400 clamp(2.2rem, 5vw, 3.4rem)/1.05 "Abril Fatface", Georgia, serif; color: var(--green-deep); }
+  p { margin: 0; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--brass); outline-offset: 3px; }
+  .wrap { width: min(1080px, 100% - 32px); margin-inline: auto; }
+
+  .sample-bar { background: #1c1c22; color: #e8e8ea; font: 500 14px/1.45 system-ui, sans-serif; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: center; text-align: center; }
+  .sample-bar a { color: #00ff99; font-weight: 600; }
+
+  /* the shopfront */
+  .front { background: var(--green); color: var(--marble); padding: 22px 0 64px; }
+  .topline { display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 15px; }
+  .topline nav { display: flex; gap: 22px; }
+  .topline nav a { text-decoration: none; color: #cfe0d7; }
+  .topline nav a:hover { color: #fff; }
+  .open-now { display: inline-flex; align-items: center; gap: 8px; color: #cfe0d7; }
+  .open-now i { width: 9px; height: 9px; border-radius: 50%; background: #7fd29b; display: inline-block; }
+  .open-now.closed i { background: #e28a8a; }
+  @media (max-width: 700px) { .topline nav { display: none; } }
+
+  .signboard { margin: 48px auto 0; max-width: 880px; text-align: center; padding: 38px 24px 30px; background: var(--green-deep); border: 3px solid var(--brass); outline: 1px solid var(--brass-light); outline-offset: -11px; }
+  .signboard h1 { font: 400 clamp(3.4rem, 12vw, 8.2rem)/0.95 "Abril Fatface", Georgia, serif; color: var(--marble); letter-spacing: 0.01em; }
+  .signboard .since { font-style: italic; color: var(--brass-light); font-size: clamp(1rem, 2.4vw, 1.3rem); margin-top: 12px; }
+  .front .intro { text-align: center; max-width: 34ch; margin: 34px auto 0; font-size: 1.2rem; color: #e4ede8; }
+  .actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .btn { font: 700 16px/1 "Karla", sans-serif; padding: 15px 24px; border-radius: 4px; border: 2px solid var(--brass); background: var(--brass); color: var(--green-deep); text-decoration: none; cursor: pointer; display: inline-flex; gap: 10px; align-items: center; }
+  .btn:hover { background: var(--brass-light); border-color: var(--brass-light); }
+  .btn.line { background: transparent; color: var(--marble); }
+  .btn.line:hover { background: rgba(255,255,255,.08); }
+  .btn svg { width: 19px; height: 19px; }
+
+  .tiles { height: 30px; background: conic-gradient(#1f1f1f 25%, var(--marble) 0 50%, #1f1f1f 0 75%, var(--marble) 0) 0 0 / 30px 30px; }
+
+  /* menu */
+  #menu { padding: 76px 0 96px; }
+  .menu-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+  .menu-head p { color: var(--muted); max-width: 36ch; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 34px 0 10px; border-bottom: 2px solid var(--green-deep); }
+  .tab { font: 700 16px "Karla", sans-serif; padding: 12px 18px; background: none; border: 0; border-bottom: 4px solid transparent; margin-bottom: -2px; color: var(--muted); cursor: pointer; }
+  .tab[aria-selected="true"] { color: var(--green-deep); border-bottom-color: var(--red); }
+  .items { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 56px; }
+  .item { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding: 22px 0; border-bottom: 1px dashed #c9cbc5; }
+  .item .line { display: flex; align-items: baseline; gap: 10px; }
+  .item h3 { font: 700 1.15rem "Karla", sans-serif; color: var(--ink); white-space: nowrap; }
+  .item .dots { flex: 1; border-bottom: 2px dotted #a3a69f; transform: translateY(-5px); min-width: 20px; }
+  .item .price { font: 400 1.25rem "Abril Fatface", Georgia, serif; color: var(--red); white-space: nowrap; }
+  .item p { grid-column: 1; color: var(--muted); font-size: 15px; }
+  .item .add { grid-column: 2; grid-row: 1 / span 2; align-self: center; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--green-deep); background: var(--marble); color: var(--green-deep); font: 700 22px/1 "Karla", sans-serif; cursor: pointer; display: grid; place-items: center; }
+  .item .add:hover { background: var(--green-deep); color: var(--marble); }
+  .item .add.in { background: var(--green-deep); color: var(--marble); font-size: 16px; }
+  @media (max-width: 760px) { .items { grid-template-columns: 1fr; } .item h3 { white-space: normal; } }
+  .veg { display: inline-block; width: 13px; height: 13px; border: 1.5px solid #2f8a3e; position: relative; margin-left: 6px; vertical-align: 1px; }
+  .veg::after { content: ""; position: absolute; inset: 2.5px; border-radius: 50%; background: #2f8a3e; }
+  .nonveg { border-color: #9b3a1d; } .nonveg::after { background: #9b3a1d; }
+  .legend { color: var(--muted); font-size: 14px; margin-top: 16px; }
+  .legend .veg { margin: 0 4px 0 0; }
+  .legend .veg.nonveg { margin-left: 12px; }
+
+  /* house rules */
+  .rules-wrap { background: var(--green); padding: 80px 0; }
+  .rules { max-width: 640px; margin: 0 auto; background: #fbfbf7; color: var(--ink); padding: 40px 34px; border: 10px solid #3b2a1a; box-shadow: inset 0 0 0 2px #d8d2c2; transform: rotate(-0.6deg); }
+  .rules h2 { text-align: center; color: var(--red); }
+  .rules ol { margin: 22px 0 0; padding-left: 22px; font-size: 1.1rem; }
+  .rules li { padding: 6px 0; }
+  .rules .by { text-align: right; font-style: italic; margin-top: 18px; color: var(--muted); }
+
+  /* story + visit */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; padding: 88px 0; }
+  .split p + p { margin-top: 14px; }
+  .story p:first-of-type { margin-top: 20px; font-size: 1.15rem; }
+  .hours { list-style: none; padding: 0; margin: 20px 0 0; }
+  .hours li { display: flex; justify-content: space-between; border-bottom: 1px dashed #c9cbc5; padding: 10px 0; gap: 16px; }
+  .hours b { color: var(--green-deep); }
+  address { font-style: normal; margin-top: 20px; }
+  .map { margin-top: 20px; width: 100%; height: 260px; border: 3px solid var(--green-deep); background: var(--marble-vein); }
+  @media (max-width: 820px) { .split { grid-template-columns: 1fr; gap: 48px; } }
+
+  footer { background: var(--green-deep); color: #cfe0d7; padding: 40px 0 110px; font-size: 15px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+  footer strong { font: 400 1.6rem "Abril Fatface", Georgia, serif; color: var(--marble); }
+
+  /* order bar */
+  .order-bar { position: fixed; left: 50%; bottom: 16px; transform: translate(-50%, 140%); width: min(560px, 100% - 24px); background: var(--green-deep); color: var(--marble); border: 2px solid var(--brass); border-radius: 6px; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 12px 12px 20px; transition: transform .3s ease, visibility .3s; z-index: 5; visibility: hidden; }
+  .order-bar.show { transform: translate(-50%, 0); visibility: visible; }
+  .order-bar b { font: 400 1.35rem "Abril Fatface", Georgia, serif; color: var(--brass-light); }
+
+  /* dialogs */
+  dialog { border: 0; padding: 0; width: min(480px, 100% - 24px); background: var(--marble); color: var(--ink); border-top: 6px solid var(--red); box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+  dialog::backdrop { background: rgba(20,53,40,.6); }
+  .d-body { padding: 26px; }
+  .d-body h2 { font-size: 2rem; }
+  .d-body p { margin-top: 10px; }
+  .lines { list-style: none; padding: 0; margin: 16px 0 0; }
+  .lines li { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px dashed #c9cbc5; }
+  .qty { display: inline-flex; align-items: center; border: 1.5px solid var(--green-deep); border-radius: 4px; }
+  .qty button { width: 32px; height: 32px; border: 0; background: none; font: 700 18px "Karla"; color: var(--green-deep); cursor: pointer; }
+  .qty span { min-width: 22px; text-align: center; font-weight: 700; }
+  .total { display: flex; justify-content: space-between; margin-top: 14px; font-weight: 700; font-size: 1.1rem; }
+  fieldset { border: 0; padding: 0; margin: 18px 0 0; display: flex; gap: 18px; flex-wrap: wrap; }
+  legend { font-weight: 700; margin-bottom: 6px; padding: 0; }
+  .d-body label.field { display: grid; gap: 5px; margin-top: 14px; font-size: 15px; color: var(--muted); }
+  .d-body input[type=text] { font: 500 16px "Karla"; padding: 11px 12px; border: 1.5px solid #b9bcb5; border-radius: 4px; background: #fff; }
+  .d-actions { display: flex; justify-content: flex-end; gap: 10px; padding: 0 26px 24px; flex-wrap: wrap; }
+  .ghost { font: 700 15px "Karla"; padding: 13px 18px; border: 1.5px solid #b9bcb5; background: none; border-radius: 4px; cursor: pointer; color: var(--ink); }
+  .d-error { color: var(--red); font-size: 14px; margin-top: 10px; min-height: 1.2em; }
+  pre.wa { white-space: pre-wrap; font: 500 15px/1.5 "Karla", sans-serif; background: #dcf8c6; color: #1b2b22; padding: 14px 16px; border-radius: 12px 12px 12px 2px; margin: 16px 0 0; }
+</style>
+</head>
+<body>
+
+<div class="sample-bar" role="note">
+  <span>Sample website made by Anubhav Maurya. Café Shirin is a made-up café.</span>
+  <a href="/contact?service=Business%20Website">Get a website like this</a>
+</div>
+
+<header class="front">
+  <div class="wrap">
+    <div class="topline">
+      <span class="open-now" id="open-now"><i></i><span>Open every day, 7 am to 11 pm</span></span>
+      <nav aria-label="Sections"><a href="#menu">Menu</a><a href="#rules">House rules</a><a href="#visit">Find us</a></nav>
+    </div>
+    <div class="signboard">
+      <h1>Café Shirin</h1>
+      <p class="since">Irani café in Dadar since 1958</p>
+    </div>
+    <p class="intro">Bun maska, strong Irani chai and berry pulao, at the same marble tables for three generations.</p>
+    <div class="actions">
+      <a class="btn" href="#menu">See the menu</a>
+      <a class="btn line" href="#visit">Find the café</a>
+    </div>
+  </div>
+</header>
+<div class="tiles" aria-hidden="true"></div>
+
+<main>
+  <section id="menu">
+    <div class="wrap">
+      <div class="menu-head">
+        <h2>The menu</h2>
+        <p>Tap + to add dishes, then send your order on WhatsApp for pickup or home delivery within 3 km.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Menu sections" id="tabs"></div>
+      <ul class="items" id="items" role="tabpanel"></ul>
+      <p class="legend"><span class="veg" aria-hidden="true"></span> Vegetarian <span class="veg nonveg" aria-hidden="true"></span> Non-vegetarian. Prices include taxes.</p>
+    </div>
+  </section>
+
+  <section class="rules-wrap" id="rules">
+    <div class="wrap">
+      <div class="rules">
+        <h2>House rules</h2>
+        <ol>
+          <li>No combing hair at the table.</li>
+          <li>No arguing about cricket after 10 pm.</li>
+          <li>One bun maska is never enough. Order two.</li>
+          <li>Do not ask for less sugar. The chai knows best.</li>
+          <li>Laptops welcome before 11 am, not at lunch.</li>
+          <li>Pay at the counter. Bargaining with the owner is not allowed.</li>
+        </ol>
+        <p class="by">By order, the management</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap split" id="visit">
+    <div class="story">
+      <h2>Three generations, one chai</h2>
+      <p>Rustom Irani opened the café in 1958 and named it after his wife, who baked the first mawa cakes in the back kitchen.</p>
+      <p>His grandchildren run it today. The bentwood chairs, the marble tables and the chai recipe haven't changed. The berry pulao arrived in 1972, and nobody has been allowed to touch that recipe either.</p>
+    </div>
+    <div>
+      <h2>Find us</h2>
+      <ul class="hours">
+        <li><span>Every day</span><b>7 am – 11 pm</b></li>
+        <li><span>Kitchen for lunch and dinner</span><b>12 – 10:30 pm</b></li>
+        <li><span>Home delivery</span><b>Within 3 km</b></li>
+      </ul>
+      <address>Corner of Ranade Road, Dadar West, Mumbai 400028.<br>Five minutes' walk from Dadar station, west side.</address>
+      <iframe class="map" title="Map of Ranade Road, Dadar West" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Ranade+Road+Dadar+West+Mumbai&amp;z=16&amp;output=embed"></iframe>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><strong>Café Shirin</strong><br>Ranade Road, Dadar West, Mumbai</div>
+    <div>Open every day, 7 am to 11 pm</div>
+    <div>Website by <a href="/">Anubhav Maurya</a></div>
+  </div>
+</footer>
+
+<div class="order-bar" id="order-bar" aria-live="polite">
+  <span id="order-count">0 items</span>
+  <b id="order-total">₹0</b>
+  <button class="btn" type="button" id="review">Review order</button>
+</div>
+
+<dialog id="order" aria-labelledby="order-title">
+  <form method="dialog" id="order-form" novalidate>
+    <div class="d-body">
+      <h2 id="order-title">Your order</h2>
+      <ul class="lines" id="lines"></ul>
+      <div class="total"><span>Total</span><span id="d-total">₹0</span></div>
+      <fieldset>
+        <legend>How do you want it?</legend>
+        <label><input type="radio" name="mode" value="Pickup from the café" checked> Pickup</label>
+        <label><input type="radio" name="mode" value="Home delivery"> Delivery (within 3 km)</label>
+      </fieldset>
+      <label class="field">Your name<input type="text" id="cust-name" autocomplete="name" placeholder="Farzana"></label>
+      <p class="d-error" id="d-error" role="alert"></p>
+    </div>
+    <div class="d-actions">
+      <button class="ghost" type="button" data-close>Add more</button>
+      <button class="btn" type="submit" id="send">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg>
+        Send on WhatsApp
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="demo" aria-labelledby="demo-title">
+  <div class="d-body">
+    <h2 id="demo-title">This is a sample</h2>
+    <p>On a real website, this opens WhatsApp with the order already written. The customer presses send, and the café gets it on its phone straight away:</p>
+    <pre class="wa" id="wa"></pre>
+  </div>
+  <div class="d-actions">
+    <button class="ghost" type="button" data-close>Keep looking</button>
+    <a class="btn" href="/contact?service=Business%20Website">Get a site like this</a>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var menu = {
+    "Breakfast": [
+      { name: "Bun maska", note: "Soft bun, thick with salted butter. Made for dipping in chai.", price: 40, veg: true },
+      { name: "Brun maska", note: "Crusty brun pav, buttered and toasted on the tawa.", price: 45, veg: true },
+      { name: "Akuri on toast", note: "Parsi-style scrambled eggs with green chilli and coriander.", price: 160, veg: false },
+      { name: "Kheema pav", note: "Slow-cooked minced mutton with two buttered pav.", price: 190, veg: false },
+      { name: "Masala omelette", note: "Three eggs, onion, tomato, chilli. Comes with bread.", price: 110, veg: false }
+    ],
+    "Chai & coffee": [
+      { name: "Irani chai", note: "Brewed strong and finished with condensed milk.", price: 30, veg: true },
+      { name: "Pudina chai", note: "Irani chai with fresh mint leaves.", price: 35, veg: true },
+      { name: "Cold coffee", note: "Thick, sweet and blended with ice cream.", price: 90, veg: true },
+      { name: "Raspberry soda", note: "The pink fizzy one. Very cold.", price: 60, veg: true }
+    ],
+    "Bakery": [
+      { name: "Mawa cake", note: "Cardamom and mawa, baked every morning at 5.", price: 35, veg: false },
+      { name: "Khari biscuits, box", note: "Flaky, buttery and salted. 250 g.", price: 60, veg: true },
+      { name: "Nankhatai, 6 pieces", note: "Crumbly shortbread with a hint of nutmeg.", price: 80, veg: true },
+      { name: "Caramel custard", note: "Set overnight, served chilled.", price: 80, veg: false }
+    ],
+    "Lunch & dinner": [
+      { name: "Chicken berry pulao", note: "Fragrant rice with chicken and sweet-sour barberries.", price: 320, veg: false },
+      { name: "Mutton dhansak", note: "Lentils cooked with mutton and vegetables, with brown rice.", price: 340, veg: false },
+      { name: "Salli boti", note: "Sweet and tangy mutton topped with crisp potato straws.", price: 300, veg: false },
+      { name: "Veg dhansak", note: "The same slow lentil curry, with seasonal vegetables.", price: 240, veg: true },
+      { name: "Chicken farcha", note: "Parsi-style fried chicken, crisp outside, juicy inside.", price: 260, veg: false }
+    ]
+  };
+  var cart = {};
+  var all = {};
+  Object.keys(menu).forEach(function (k) { menu[k].forEach(function (d) { all[d.name] = d; }); });
+
+  function el(tag, attrs, text) {
+    var n = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (a) { n.setAttribute(a, attrs[a]); });
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function rupees(n) { return "₹" + n.toLocaleString("en-IN"); }
+
+  var tabs = document.getElementById("tabs");
+  var items = document.getElementById("items");
+  var current = "Breakfast";
+
+  function renderTabs() {
+    tabs.innerHTML = "";
+    Object.keys(menu).forEach(function (k) {
+      var t = el("button", { type: "button", role: "tab", class: "tab", "aria-selected": String(k === current) }, k);
+      t.addEventListener("click", function () { current = k; renderTabs(); renderItems(); });
+      tabs.appendChild(t);
+    });
+  }
+  function renderItems() {
+    items.innerHTML = "";
+    menu[current].forEach(function (d) {
+      var li = el("li", { class: "item" });
+      var line = el("div", { class: "line" });
+      var h = el("h3", {}, d.name);
+      var mark = el("span", { class: d.veg ? "veg" : "veg nonveg", role: "img", "aria-label": d.veg ? "vegetarian" : "non-vegetarian" });
+      h.appendChild(mark);
+      line.appendChild(h);
+      line.appendChild(el("span", { class: "dots", "aria-hidden": "true" }));
+      line.appendChild(el("span", { class: "price" }, rupees(d.price)));
+      li.appendChild(line);
+      li.appendChild(el("p", {}, d.note));
+      var qty = cart[d.name] || 0;
+      var add = el("button", { type: "button", class: "add" + (qty ? " in" : ""), "aria-label": qty ? d.name + ", " + qty + " in order. Add one more" : "Add " + d.name }, qty ? "×" + qty : "+");
+      add.addEventListener("click", function () { cart[d.name] = (cart[d.name] || 0) + 1; renderItems(); renderBar(); });
+      li.appendChild(add);
+      items.appendChild(li);
+    });
+  }
+  function totals() {
+    var count = 0, sum = 0;
+    Object.keys(cart).forEach(function (k) { count += cart[k]; sum += cart[k] * all[k].price; });
+    return { count: count, sum: sum };
+  }
+  var bar = document.getElementById("order-bar");
+  function renderBar() {
+    var t = totals();
+    bar.classList.toggle("show", t.count > 0);
+    document.getElementById("order-count").textContent = t.count + (t.count === 1 ? " item" : " items");
+    document.getElementById("order-total").textContent = rupees(t.sum);
+  }
+
+  var orderDialog = document.getElementById("order");
+  var demoDialog = document.getElementById("demo");
+  function renderLines() {
+    var ul = document.getElementById("lines");
+    ul.innerHTML = "";
+    Object.keys(cart).forEach(function (k) {
+      if (!cart[k]) return;
+      var li = el("li");
+      li.appendChild(el("span", {}, k));
+      var q = el("span", { class: "qty" });
+      var minus = el("button", { type: "button", "aria-label": "One less " + k }, "−");
+      var plus = el("button", { type: "button", "aria-label": "One more " + k }, "+");
+      minus.addEventListener("click", function () { cart[k]--; if (!cart[k]) delete cart[k]; afterChange(); });
+      plus.addEventListener("click", function () { cart[k]++; afterChange(); });
+      q.appendChild(minus); q.appendChild(el("span", {}, String(cart[k]))); q.appendChild(plus);
+      li.appendChild(q);
+      li.appendChild(el("span", {}, rupees(cart[k] * all[k].price)));
+      ul.appendChild(li);
+    });
+    document.getElementById("d-total").textContent = rupees(totals().sum);
+  }
+  function afterChange() {
+    renderLines(); renderItems(); renderBar();
+    if (!totals().count) orderDialog.close();
+  }
+  document.getElementById("review").addEventListener("click", function () {
+    renderLines();
+    document.getElementById("d-error").textContent = "";
+    orderDialog.showModal();
+  });
+  document.getElementById("order-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("cust-name").value.trim();
+    if (!name) { document.getElementById("d-error").textContent = "Please add your name so the café knows whose order it is."; return; }
+    var mode = document.querySelector("input[name=mode]:checked").value;
+    var lines = Object.keys(cart).map(function (k) { return cart[k] + " × " + k + " — " + rupees(cart[k] * all[k].price); });
+    document.getElementById("wa").textContent =
+      "Hi Café Shirin, I'd like to order:\n\n" + lines.join("\n") +
+      "\n\nTotal: " + rupees(totals().sum) + "\n" + mode + "\nName: " + name;
+    orderDialog.close();
+    demoDialog.showModal();
+  });
+  document.querySelectorAll("dialog [data-close]").forEach(function (b) {
+    b.addEventListener("click", function () { b.closest("dialog").close(); });
+  });
+  document.querySelectorAll("dialog").forEach(function (d) {
+    d.addEventListener("click", function (e) { if (e.target === d) d.close(); });
+  });
+
+  // open-now indicator
+  var h = new Date().getHours();
+  var open = h >= 7 && h < 23;
+  var badge = document.getElementById("open-now");
+  badge.classList.toggle("closed", !open);
+  badge.querySelector("span").textContent = open ? "Open now, until 11 pm" : "Closed now. Opens at 7 am";
+
+  renderTabs(); renderItems(); renderBar();
+})();
+</script>
+</body>
+</html>
