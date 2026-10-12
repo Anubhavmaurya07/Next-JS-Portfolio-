@@ -7,6 +7,8 @@ const nextConfig = {
   async rewrites() {
     return [
       { source: "/samples/:name", destination: "/samples/:name/index.html" },
+      // Client previews, shared by link only (noindex, not linked from the site).
+      { source: "/clients/:name", destination: "/clients/:name/index.html" },
     ];
   },
   async headers() {
