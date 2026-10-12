@@ -1,11 +1,23 @@
-// Single source of truth for site-wide identity. Set NEXT_PUBLIC_SITE_URL in
-// production so canonical URLs, OG tags and the sitemap point at the real host.
+// The public address of the site, used for canonical URLs, OG tags (link
+// previews on WhatsApp/LinkedIn) and the sitemap. Order of preference:
+//   1. NEXT_PUBLIC_SITE_URL, if set in Vercel
+//   2. Vercel's production domain (set automatically on every Vercel build,
+//      and switches to a custom domain on its own once one is added)
+//   3. the current live URL, so it can never fall back to localhost again
+const vercelProductionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (vercelProductionHost
+    ? `https://${vercelProductionHost}`
+    : "https://anubhav-portfolio-zeta.vercel.app");
+
+// Single source of truth for site-wide identity.
 export const siteConfig = {
   name: "Anubhav Maurya",
   role: "Full Stack Developer",
   description:
-    "Full Stack MERN Developer building scalable REST APIs and high-performance React applications with Node.js, MongoDB and Next.js.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+    "Full stack developer in Mumbai building fast business websites, portfolio sites and custom software — booking systems, CRMs and dashboards — with React, Next.js and Node.js.",
+  url: siteUrl.replace(/\/$/, ""),
   // Shown on the site.
   email: "amanubhav8521@gmail.com",
   // Where contact-form submissions are delivered. Kept separate from the
@@ -15,6 +27,8 @@ export const siteConfig = {
   // resend.com/domains, set CONTACT_FROM_EMAIL and point this at `email`.
   inbox: "anubhavmaurya8521@gmail.com",
   phone: "(+91) 7068220038",
+  // Digits only, country code first — the format wa.me links need.
+  whatsapp: "917068220038",
   location: "Mumbai, Maharashtra",
   github: "https://github.com/Anubhavmaurya07",
   linkedin: "https://www.linkedin.com/in/anubhav-maurya-663593248/",
@@ -34,15 +48,25 @@ export const GITHUB_ACCOUNTS: readonly string[] = (
   .map((name) => name.trim())
   .filter(Boolean);
 
-// Counts that are not derivable from an API — kept here so they are easy to
-// keep honest, and used as the fallback when GitHub cannot be reached.
+// Opens WhatsApp with a ready-to-send first message, so a visitor only has to
+// press send. Works on phones (app) and desktops (WhatsApp Web).
+export const whatsappLink = (
+  message = "Hi Anubhav, I saw your website and I'd like to talk about a project."
+) => `https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(message)}`;
+
+// Homepage numbers. Written for business owners rather than developers, and
+// kept here so they are easy to keep honest — every one is backed by the
+// resume and projects pages.
 export const shippedSystems = 5; // 4 Travkings platforms + Pixora
+export const companiesWorkedWith = 4; // Travkings, Binny's, Xircls, Digilateral
+export const countriesInUse = 3; // KBiz-360 runs five branches in three countries
 export const technologyCount = 12; // matches the skills grid on /resume
 
-// Start of professional experience. Predates the roles listed on the CV,
-// which only goes back to the first full-time-adjacent position.
-// Adjust the month if the roll-over to the next year should land elsewhere.
-export const CAREER_START = new Date(2023, 0, 1);
+// Start of professional experience — the first role on the CV (Digilateral
+// internship, Jan 2024), so the "years of experience" figure matches the
+// dates a client or recruiter can check. If there was paid work before this,
+// add it to the resume and move this date back to match.
+export const CAREER_START = new Date(2024, 0, 1);
 
 export const yearsOfExperience = (from: Date = CAREER_START) => {
   const now = new Date();
