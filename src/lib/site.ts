@@ -16,7 +16,7 @@ export const siteConfig = {
   name: "Anubhav Maurya",
   role: "Full Stack Developer",
   description:
-    "Full stack developer in Mumbai building fast business websites, portfolio sites and custom software — booking systems, CRMs and dashboards — with React, Next.js and Node.js.",
+    "Full stack developer in Mumbai building websites, mobile apps and custom software — booking systems, CRMs and dashboards — for every kind of business.",
   url: siteUrl.replace(/\/$/, ""),
   // Shown on the site.
   email: "amanubhav8521@gmail.com",

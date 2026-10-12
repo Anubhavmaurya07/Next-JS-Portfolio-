@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     "Website Developer Mumbai",
     "Freelance Web Developer",
     "Business Website Design",
+    "Mobile App Developer",
     "Portfolio Website",
     "Custom Software Development",
     "Full Stack Developer",
