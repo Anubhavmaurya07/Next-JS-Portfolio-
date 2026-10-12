@@ -2,6 +2,13 @@
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  // Sample websites are plain HTML in public/samples/<name>/index.html.
+  // This serves them at the short address /samples/<name>.
+  async rewrites() {
+    return [
+      { source: "/samples/:name", destination: "/samples/:name/index.html" },
+    ];
+  },
   async headers() {
     return [
       {

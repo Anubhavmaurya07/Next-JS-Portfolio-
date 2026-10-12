@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kinara Dental Clinic, Andheri West — sample website</title>
+<meta name="description" content="Sample clinic website by Anubhav Maurya: a made-up dental clinic with online appointment booking, prices, timings and location.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #12343b;
+    --text: #2e4a50;
+    --muted: #5b7175;
+    --paper: #fbfdfc;
+    --mint: #e3f4ef;
+    --mint-deep: #cdebe3;
+    --teal: #1f9e8a;
+    --teal-dark: #177f6f;
+    --sun: #f5c451;
+    --line: #d5e6e1;
+    --radius-lg: 28px;
+    --radius-sm: 10px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--text);
+    font: 400 17px/1.6 "Figtree", system-ui, sans-serif;
+  }
+  h1, h2, h3 { font-family: "Bricolage Grotesque", "Figtree", sans-serif; color: var(--ink); line-height: 1.08; margin: 0; }
+  h1 { font-size: clamp(2.5rem, 5.6vw, 4.4rem); font-weight: 800; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.9rem, 3.4vw, 2.6rem); font-weight: 700; letter-spacing: -0.015em; }
+  h3 { font-size: 1.2rem; font-weight: 700; }
+  p { margin: 0; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; border-radius: 6px; }
+  .wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
+
+  /* sample notice */
+  .sample-bar { background: #1c1c22; color: #e8e8ea; font: 500 14px/1.45 system-ui, sans-serif; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: center; text-align: center; }
+  .sample-bar a { color: #00ff99; font-weight: 600; }
+
+  /* header */
+  header.site { padding: 22px 0; }
+  header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 700 1.3rem/1 "Bricolage Grotesque", sans-serif; color: var(--ink); }
+  .brand svg { width: 34px; height: 34px; }
+  nav.links { display: flex; gap: 26px; font-weight: 500; }
+  nav.links a { text-decoration: none; color: var(--muted); }
+  nav.links a:hover { color: var(--ink); }
+  .call { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; color: var(--ink); border: 1.5px solid var(--ink); padding: 9px 16px; border-radius: 999px; background: none; font-size: 15px; cursor: pointer; font-family: inherit; }
+  .call:hover { background: var(--ink); color: #fff; }
+  @media (max-width: 860px) { nav.links { display: none; } }
+
+  /* hero */
+  .hero { padding: 28px 0 72px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: start; }
+  .hero-copy { padding-top: 36px; }
+  .hero-copy p.lede { font-size: 1.2rem; margin-top: 22px; max-width: 30ch; color: var(--text); }
+  .facts { list-style: none; padding: 0; margin: 34px 0 0; display: grid; gap: 14px; }
+  .facts li { display: flex; gap: 12px; align-items: baseline; }
+  .facts li::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--teal); transform: translateY(-1px); }
+  .facts strong { color: var(--ink); font-weight: 600; }
+  @media (max-width: 920px) { .hero .wrap { grid-template-columns: 1fr; gap: 36px; } .hero-copy { padding-top: 8px; } }
+
+  /* booking card — the main event */
+  .booking { background: var(--mint); border-radius: var(--radius-lg); padding: 28px; }
+  .booking h2 { font-size: 1.6rem; }
+  .booking .hint { color: var(--muted); font-size: 15px; margin-top: 6px; }
+  .step { margin-top: 22px; }
+  .step-label { font-weight: 600; color: var(--ink); font-size: 15px; margin-bottom: 10px; display: block; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font: 500 15px/1 "Figtree", sans-serif; padding: 10px 14px; border-radius: 999px; border: 1.5px solid var(--mint-deep); background: #fff; color: var(--text); cursor: pointer; }
+  .chip:hover { border-color: var(--teal); }
+  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .day { border: 1.5px solid var(--mint-deep); background: #fff; border-radius: var(--radius-sm); padding: 9px 4px; cursor: pointer; font-family: inherit; color: var(--text); text-align: center; }
+  .day span { display: block; font-size: 13px; color: var(--muted); }
+  .day b { display: block; font: 700 1.25rem/1.2 "Bricolage Grotesque", sans-serif; color: var(--ink); }
+  .day[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); }
+  .day[aria-pressed="true"] span, .day[aria-pressed="true"] b { color: #fff; }
+  .times-group { margin-top: 4px; }
+  .times-group + .times-group { margin-top: 12px; }
+  .times-group small { display: block; color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+  .times { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 6px; }
+  .time { font: 500 14px/1 "Figtree", sans-serif; padding: 10px 0; border-radius: 8px; border: 1.5px solid var(--mint-deep); background: #fff; color: var(--ink); cursor: pointer; }
+  .time:hover:not(:disabled) { border-color: var(--teal); }
+  .time:disabled { background: transparent; color: #9db3b0; text-decoration: line-through; cursor: not-allowed; border-style: dashed; }
+  .time[aria-pressed="true"] { background: var(--teal); border-color: var(--teal); color: #fff; }
+  .none-left { color: var(--muted); font-size: 15px; }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .fields label { font-size: 14px; color: var(--muted); display: grid; gap: 5px; }
+  .fields input { font: 500 16px "Figtree", sans-serif; padding: 12px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--mint-deep); background: #fff; color: var(--ink); width: 100%; }
+  .fields input:focus { border-color: var(--teal); outline: none; box-shadow: 0 0 0 3px rgba(31,158,138,.25); }
+  @media (max-width: 480px) { .fields { grid-template-columns: 1fr; } .days { grid-template-columns: repeat(3, 1fr); } .booking { padding: 22px 18px; } }
+  .summary { margin-top: 22px; padding-top: 18px; border-top: 1.5px dashed var(--mint-deep); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .summary p { font-size: 15px; color: var(--ink); max-width: 30ch; }
+  .summary p.empty { color: var(--muted); }
+  .btn { font: 600 16px/1 "Figtree", sans-serif; padding: 15px 22px; border-radius: 999px; border: 0; background: var(--teal); color: #fff; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+  .btn:hover { background: var(--teal-dark); }
+  .btn svg { width: 20px; height: 20px; }
+  .form-error { color: #b4232c; font-size: 14px; margin-top: 10px; min-height: 1.2em; }
+
+  /* sections */
+  section.block { padding: 84px 0; }
+  section.block.tint { background: var(--mint); }
+  .section-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
+  .section-head p { max-width: 42ch; color: var(--muted); }
+
+  /* prices */
+  .prices { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--line); }
+  .prices li { display: grid; grid-template-columns: 1fr auto; gap: 6px 24px; padding: 20px 0; border-bottom: 1.5px solid var(--line); }
+  .prices h3 { font-size: 1.25rem; }
+  .prices p { color: var(--muted); grid-column: 1; max-width: 62ch; }
+  .prices .price { grid-column: 2; grid-row: 1 / span 2; align-self: center; font: 700 1.25rem "Bricolage Grotesque", sans-serif; color: var(--ink); text-align: right; white-space: nowrap; }
+  .prices .price small { display: block; font: 500 13px "Figtree", sans-serif; color: var(--muted); }
+  .note { margin-top: 18px; color: var(--muted); font-size: 15px; }
+
+  /* doctor */
+  .doctor { display: grid; grid-template-columns: 280px 1fr; gap: 48px; align-items: center; }
+  .monogram { aspect-ratio: 1; border-radius: 50% 50% 50% 18px; background: var(--ink); color: var(--mint); display: grid; place-items: center; font: 800 5rem/1 "Bricolage Grotesque", sans-serif; letter-spacing: -0.04em; }
+  .doctor .creds { margin-top: 8px; color: var(--teal-dark); font-weight: 600; }
+  .doctor p.bio { margin-top: 18px; max-width: 60ch; }
+  .doctor ul { margin: 18px 0 0; padding-left: 20px; color: var(--text); }
+  .doctor li + li { margin-top: 6px; }
+  @media (max-width: 760px) { .doctor { grid-template-columns: 1fr; gap: 28px; } .monogram { width: 180px; font-size: 3.6rem; } }
+
+  /* visit */
+  .visit { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; }
+  .hours { width: 100%; border-collapse: collapse; margin-top: 18px; }
+  .hours th, .hours td { text-align: left; padding: 12px 0; border-bottom: 1.5px solid var(--mint-deep); font-weight: 500; }
+  .hours th { color: var(--ink); width: 42%; }
+  .hours tr.today th, .hours tr.today td { color: var(--teal-dark); font-weight: 700; }
+  .address { margin-top: 22px; font-style: normal; }
+  .address + .btn { margin-top: 18px; }
+  .map { border: 0; width: 100%; height: 100%; min-height: 340px; border-radius: var(--radius-lg); background: var(--mint-deep); }
+  @media (max-width: 860px) { .visit { grid-template-columns: 1fr; } }
+
+  /* reviews */
+  .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .reviews figure { margin: 0; }
+  .reviews blockquote { margin: 0; font: 500 1.15rem/1.5 "Figtree", sans-serif; color: var(--ink); }
+  .reviews figcaption { margin-top: 14px; color: var(--muted); font-size: 15px; }
+  .stars { color: #d79c12; letter-spacing: 2px; margin-bottom: 10px; }
+  @media (max-width: 860px) { .reviews { grid-template-columns: 1fr; } }
+
+  /* faq */
+  .faq { max-width: 760px; }
+  .faq details { border-bottom: 1.5px solid var(--line); padding: 18px 0; }
+  .faq summary { cursor: pointer; font: 700 1.15rem "Bricolage Grotesque", sans-serif; color: var(--ink); list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-size: 1.5rem; line-height: 1; color: var(--teal); }
+  .faq details[open] summary::after { content: "–"; }
+  .faq details p { margin-top: 10px; max-width: 65ch; }
+
+  footer.site { background: var(--ink); color: #c8dbd8; padding: 48px 0; font-size: 15px; }
+  footer.site .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  footer.site strong { color: #fff; font: 700 1.2rem "Bricolage Grotesque", sans-serif; }
+
+  /* demo dialog */
+  dialog.demo { border: 0; border-radius: 20px; padding: 0; width: min(460px, 100% - 32px); color: var(--text); box-shadow: 0 30px 80px rgba(18,52,59,.35); }
+  dialog.demo::backdrop { background: rgba(18,52,59,.55); }
+  .demo-body { padding: 28px; }
+  .demo-body h2 { font-size: 1.5rem; }
+  .demo-body p { margin-top: 10px; }
+  .demo-body pre { white-space: pre-wrap; font: 500 15px/1.5 "Figtree", sans-serif; background: #dcf8c6; color: #1b2b22; padding: 14px 16px; border-radius: 12px 12px 12px 2px; margin: 16px 0 0; }
+  .demo-actions { display: flex; gap: 10px; justify-content: flex-end; padding: 0 28px 24px; flex-wrap: wrap; }
+  .ghost { font: 600 15px "Figtree", sans-serif; padding: 12px 18px; border-radius: 999px; background: none; border: 1.5px solid var(--line); color: var(--ink); cursor: pointer; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="sample-bar" role="note">
+  <span>Sample website made by Anubhav Maurya. Kinara Dental is a made-up clinic.</span>
+  <a href="/contact?service=Business%20Website">Get a website like this</a>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Kinara Dental, home">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="#12343b"/><path d="M7 24c4-5 8-5 13 0s9 5 13 0" stroke="#e3f4ef" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M7 16c4-5 8-5 13 0s9 5 13 0" stroke="#1f9e8a" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+      Kinara Dental
+    </a>
+    <nav class="links" aria-label="Sections">
+      <a href="#treatments">Treatments &amp; prices</a>
+      <a href="#doctor">Your dentist</a>
+      <a href="#visit">Timings</a>
+      <a href="#questions">Questions</a>
+    </nav>
+    <button class="call" type="button" data-demo="call">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+      Call the clinic
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1>Gentle, unhurried dental care in Andheri West.</h1>
+        <p class="lede">Evening appointments until 9 pm, so a check-up never costs you a day off work.</p>
+        <ul class="facts">
+          <li><span><strong>Prices on this page</strong>, written down before we start any treatment</span></li>
+          <li><span><strong>Children welcome</strong>, with a separate quiet room for nervous patients</span></li>
+          <li><span><strong>Pay how you like</strong>: UPI, cards or cash, with bills for insurance claims</span></li>
+        </ul>
+      </div>
+
+      <form class="booking" id="booking" novalidate aria-labelledby="booking-title">
+        <h2 id="booking-title">Book a visit</h2>
+        <p class="hint">Pick a time and we'll confirm it on WhatsApp within the hour.</p>
+
+        <div class="step" role="group" aria-labelledby="l-reason">
+          <span class="step-label" id="l-reason">What do you need?</span>
+          <div class="chips" id="reasons"></div>
+        </div>
+
+        <div class="step" role="group" aria-labelledby="l-day">
+          <span class="step-label" id="l-day">Day</span>
+          <div class="days" id="days"></div>
+        </div>
+
+        <div class="step" role="group" aria-labelledby="l-time">
+          <span class="step-label" id="l-time">Time</span>
+          <div id="times"></div>
+        </div>
+
+        <div class="step fields">
+          <label>Your name<input id="name" name="name" autocomplete="name" placeholder="Priya Sharma"></label>
+          <label>Phone<input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98xxx xxxxx"></label>
+        </div>
+
+        <div class="summary">
+          <p id="summary" class="empty" aria-live="polite">Choose what you need and a time.</p>
+          <button class="btn" type="submit">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg>
+            Book on WhatsApp
+          </button>
+        </div>
+        <p class="form-error" id="error" role="alert"></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="block tint" id="treatments">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Treatments and prices</h2>
+        <p>Starting prices for the most common treatments. You'll get the exact cost in writing after your check-up.</p>
+      </div>
+      <ul class="prices">
+        <li><h3>Check-up and consultation</h3><p>A full look at your teeth and gums, an X-ray if needed, and a plain-language plan.</p><span class="price">₹500</span></li>
+        <li><h3>Cleaning and polishing</h3><p>Removes tartar and stains. Recommended every six months.</p><span class="price"><small>from</small>₹1,200</span></li>
+        <li><h3>Tooth-coloured filling</h3><p>Repairs a cavity with a filling that matches your tooth.</p><span class="price"><small>from</small>₹1,500</span></li>
+        <li><h3>Root canal treatment</h3><p>Saves an infected tooth, usually in one or two sittings under local anaesthesia.</p><span class="price"><small>from</small>₹5,500</span></li>
+        <li><h3>Teeth whitening</h3><p>In-clinic whitening in a single 60-minute visit.</p><span class="price"><small>from</small>₹6,000</span></li>
+        <li><h3>Braces and aligners</h3><p>Metal, ceramic or clear aligners, with a monthly payment plan.</p><span class="price"><small>from</small>₹35,000</span></li>
+      </ul>
+      <p class="note">Children under 12 get their first check-up free.</p>
+    </div>
+  </section>
+
+  <section class="block" id="doctor">
+    <div class="wrap doctor">
+      <div class="monogram" aria-hidden="true">AR</div>
+      <div>
+        <h2>Dr. Ananya Rao</h2>
+        <p class="creds">BDS, MDS (Endodontics), 12 years in practice</p>
+        <p class="bio">Dr. Rao started Kinara Dental in 2018 after four years at a large hospital, to run a clinic where nobody is rushed out of the chair. She explains every step before she does it, and she'll tell you when a treatment can wait.</p>
+        <ul>
+          <li>Specialist in painless root canal treatment</li>
+          <li>Speaks English, Hindi, Marathi and Telugu</li>
+          <li>Sterilisation logged for every instrument, every patient</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tint" id="visit">
+    <div class="wrap visit">
+      <div>
+        <h2>Timings and location</h2>
+        <table class="hours" aria-label="Clinic timings">
+          <tbody id="hours">
+            <tr data-days="1,2,3,4,5"><th scope="row">Monday to Friday</th><td>10 am – 1:30 pm, 5 – 9 pm</td></tr>
+            <tr data-days="6"><th scope="row">Saturday</th><td>10 am – 4 pm</td></tr>
+            <tr data-days="0"><th scope="row">Sunday</th><td>Closed — emergencies by phone</td></tr>
+          </tbody>
+        </table>
+        <address class="address">2nd floor, Seaside Court, Lokhandwala Road,<br>Andheri West, Mumbai 400053<br>Two minutes from the Lokhandwala bus stop. Lift available.</address>
+        <button class="btn" type="button" data-demo="directions">Get directions</button>
+      </div>
+      <iframe class="map" title="Map of Andheri West, Mumbai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Lokhandwala+Andheri+West+Mumbai&amp;z=15&amp;output=embed"></iframe>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="reviews-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="reviews-title">What patients say</h2>
+        <p>Sample reviews. On a real website, these come straight from your Google reviews.</p>
+      </div>
+      <div class="reviews">
+        <figure><div class="stars" aria-label="5 out of 5">★★★★★</div><blockquote>I put off my root canal for a year. It took one sitting and I felt nothing. Should have come sooner.</blockquote><figcaption>Rahul M., Versova</figcaption></figure>
+        <figure><div class="stars" aria-label="5 out of 5">★★★★★</div><blockquote>My son actually asks when his next visit is. They explained everything to him first.</blockquote><figcaption>Sneha K., Oshiwara</figcaption></figure>
+        <figure><div class="stars" aria-label="5 out of 5">★★★★★</div><blockquote>The 8 pm slot is the only reason I finally got my teeth cleaned. Clear prices, no surprises.</blockquote><figcaption>Imran S., Andheri West</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tint" id="questions">
+    <div class="wrap">
+      <h2 style="margin-bottom:24px">Questions people ask</h2>
+      <div class="faq">
+        <details><summary>Does a root canal hurt?</summary><p>Not during the treatment — the tooth is fully numbed first. You may feel some soreness for a day or two afterwards, which a regular painkiller handles.</p></details>
+        <details><summary>Can I come without an appointment?</summary><p>Yes, for pain or an emergency we'll see you the same day. For anything else, booking a slot means you won't wait.</p></details>
+        <details><summary>Do you treat children?</summary><p>Yes, from age 2. We keep their first visit short and fun, and the first check-up for children under 12 is free.</p></details>
+        <details><summary>Can I claim the cost on insurance?</summary><p>We give itemised bills and treatment notes that most insurers accept for reimbursement. Check your policy for dental cover.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div><strong>Kinara Dental Clinic</strong><br>Lokhandwala Road, Andheri West, Mumbai</div>
+    <div>Monday to Saturday, until 9 pm on weekdays</div>
+    <div>Website by <a href="/">Anubhav Maurya</a></div>
+  </div>
+</footer>
+
+<dialog class="demo" id="demo" aria-labelledby="demo-title">
+  <div class="demo-body">
+    <h2 id="demo-title">This is a sample website</h2>
+    <p id="demo-text"></p>
+    <pre id="demo-message" hidden></pre>
+  </div>
+  <div class="demo-actions">
+    <button class="ghost" type="button" data-close>Keep looking</button>
+    <a class="btn" href="/contact?service=Business%20Website">Get a site like this</a>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var reasons = ["Check-up", "Cleaning", "Tooth pain", "Root canal", "Braces or aligners", "Child's visit"];
+  var state = { reason: null, day: null, time: null };
+  var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  function el(tag, attrs, text) {
+    var node = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) { node.setAttribute(k, attrs[k]); });
+    if (text != null) node.textContent = text;
+    return node;
+  }
+  function press(group, button) {
+    group.querySelectorAll("[aria-pressed]").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+    button.setAttribute("aria-pressed", "true");
+  }
+
+  // what do you need
+  var reasonBox = document.getElementById("reasons");
+  reasons.forEach(function (r) {
+    var b = el("button", { type: "button", class: "chip", "aria-pressed": "false" }, r);
+    b.addEventListener("click", function () { state.reason = r; press(reasonBox, b); update(); });
+    reasonBox.appendChild(b);
+  });
+
+  // the next six days the clinic is open (closed on Sundays)
+  var openDays = [];
+  var cursor = new Date();
+  cursor.setHours(0, 0, 0, 0);
+  while (openDays.length < 6) {
+    if (cursor.getDay() !== 0) openDays.push(new Date(cursor));
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  var dayBox = document.getElementById("days");
+  openDays.forEach(function (d, i) {
+    var b = el("button", { type: "button", class: "day", "aria-pressed": "false" });
+    var label = i === 0 && d.toDateString() === new Date().toDateString() ? "Today" : dayNames[d.getDay()];
+    b.appendChild(el("span", {}, label));
+    b.appendChild(el("b", {}, String(d.getDate())));
+    b.setAttribute("aria-label", dayNames[d.getDay()] + " " + d.getDate() + " " + monthNames[d.getMonth()]);
+    b.addEventListener("click", function () { state.day = d; state.time = null; press(dayBox, b); renderTimes(); update(); });
+    dayBox.appendChild(b);
+  });
+
+  // slots: weekday mornings and evenings, Saturday daytime only
+  function slotsFor(d) {
+    var list = [];
+    function add(fromH, fromM, toH, toM) {
+      for (var m = fromH * 60 + fromM; m < toH * 60 + toM; m += 30) list.push(m);
+    }
+    if (d.getDay() === 6) { add(10, 0, 16, 0); } else { add(10, 0, 13, 30); add(17, 0, 21, 0); }
+    return list;
+  }
+  function fmt(mins) {
+    var h = Math.floor(mins / 60), m = mins % 60, ap = h >= 12 ? "pm" : "am";
+    h = h % 12 || 12;
+    return h + (m ? ":" + String(m).padStart(2, "0") : "") + " " + ap;
+  }
+  // a few slots look taken, the same ones every time for a given day
+  function isTaken(d, mins) {
+    var seed = (d.getDate() * 37 + d.getMonth() * 11 + mins) % 7;
+    return seed === 0 || seed === 3;
+  }
+  var timeBox = document.getElementById("times");
+  function renderTimes() {
+    timeBox.innerHTML = "";
+    if (!state.day) { timeBox.appendChild(el("p", { class: "none-left" }, "Pick a day to see free times.")); return; }
+    var now = new Date();
+    var isToday = state.day.toDateString() === now.toDateString();
+    var nowMins = now.getHours() * 60 + now.getMinutes() + 60;
+    var groups = [["Morning", function (m) { return m < 14 * 60; }], ["Evening", function (m) { return m >= 14 * 60; }]];
+    if (state.day.getDay() === 6) groups = [["Saturday", function () { return true; }]];
+    var any = false;
+    groups.forEach(function (g) {
+      var slots = slotsFor(state.day).filter(g[1]).filter(function (m) { return !isToday || m > nowMins; });
+      if (!slots.length) return;
+      var wrap = el("div", { class: "times-group" });
+      wrap.appendChild(el("small", {}, g[0]));
+      var grid = el("div", { class: "times" });
+      slots.forEach(function (m) {
+        var taken = isTaken(state.day, m);
+        var b = el("button", { type: "button", class: "time", "aria-pressed": "false" }, fmt(m));
+        if (taken) { b.disabled = true; b.setAttribute("aria-label", fmt(m) + ", booked"); }
+        else { any = true; b.addEventListener("click", function () { state.time = m; press(timeBox, b); update(); }); }
+        grid.appendChild(b);
+      });
+      wrap.appendChild(grid);
+      timeBox.appendChild(wrap);
+    });
+    if (!any) timeBox.appendChild(el("p", { class: "none-left" }, "No free times left that day. Try the next one."));
+  }
+  renderTimes();
+
+  var summary = document.getElementById("summary");
+  function when() {
+    var d = state.day;
+    return dayNames[d.getDay()] + " " + d.getDate() + " " + monthNames[d.getMonth()] + " at " + fmt(state.time);
+  }
+  function update() {
+    document.getElementById("error").textContent = "";
+    if (state.reason && state.day && state.time != null) {
+      summary.textContent = state.reason + ", " + when();
+      summary.classList.remove("empty");
+    } else {
+      summary.textContent = "Choose what you need and a time.";
+      summary.classList.add("empty");
+    }
+  }
+
+  // demo dialog
+  var dialog = document.getElementById("demo");
+  function showDemo(text, message) {
+    document.getElementById("demo-text").textContent = text;
+    var pre = document.getElementById("demo-message");
+    pre.hidden = !message;
+    pre.textContent = message || "";
+    if (dialog.showModal) dialog.showModal(); else alert(text + (message ? "\n\n" + message : ""));
+  }
+  dialog.querySelector("[data-close]").addEventListener("click", function () { dialog.close(); });
+  dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+
+  document.getElementById("booking").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = document.getElementById("name").value.trim();
+    var missing = [];
+    if (!state.reason) missing.push("what you need");
+    if (!state.day || state.time == null) missing.push("a day and time");
+    if (!name) missing.push("your name");
+    if (missing.length) {
+      document.getElementById("error").textContent = "Please choose " + missing.join(", ") + ".";
+      return;
+    }
+    showDemo(
+      "On a real website, this opens WhatsApp with the booking already written, so the patient just presses send and the clinic gets it instantly:",
+      "Hi Kinara Dental, I'd like to book a visit.\n\nFor: " + state.reason + "\nWhen: " + when() + "\nName: " + name
+    );
+  });
+
+  document.querySelectorAll("[data-demo]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var kind = b.getAttribute("data-demo");
+      showDemo(kind === "call"
+        ? "On a real website, this button rings the clinic straight from the patient's phone."
+        : "On a real website, this opens Google Maps with directions to the clinic's door.");
+    });
+  });
+
+  // highlight today's row in the timings table
+  var today = new Date().getDay();
+  document.querySelectorAll("#hours tr").forEach(function (row) {
+    if (row.getAttribute("data-days").split(",").indexOf(String(today)) !== -1) row.classList.add("today");
+  });
+})();
+</script>
+</body>
+</html>
