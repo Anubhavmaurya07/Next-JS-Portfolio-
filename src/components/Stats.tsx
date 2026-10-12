@@ -11,10 +11,10 @@ import {
 // there are. (src/lib/github.ts is still there if those are wanted back.)
 const Stats = () => {
   const stats: Stat[] = [
-    { num: yearsOfExperience(), suffix: "+", text: "Years building for businesses" },
-    { num: shippedSystems, text: "Systems built & shipped" },
-    { num: companiesWorkedWith, text: "Companies I've built for" },
-    { num: countriesInUse, text: "Countries my software runs in" },
+    { num: yearsOfExperience(), suffix: "+", text: "Years of experience" },
+    { num: shippedSystems, text: "Systems shipped" },
+    { num: companiesWorkedWith, text: "Companies built for" },
+    { num: countriesInUse, text: "Countries in use" },
   ];
 
   return (

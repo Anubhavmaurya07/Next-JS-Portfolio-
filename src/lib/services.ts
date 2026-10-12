@@ -63,7 +63,7 @@ export const packages: {
 }[] = [
   {
     name: "Starter Website",
-    forWho: "For a shop, clinic, salon or professional who needs to be found online.",
+    forWho: "For a shop, clinic or salon that needs to be found online.",
     price: null,
     features: [
       "One-page website that looks great on phones",

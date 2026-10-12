@@ -79,7 +79,7 @@ export default function Services() {
                       )}
                       <div>
                         <h3 className='text-2xl font-bold mb-2'>{pkg.name}</h3>
-                        <p className='text-white/60 text-sm'>{pkg.forWho}</p>
+                        <p className='text-white/60 text-sm lg:min-h-[3.75rem]'>{pkg.forWho}</p>
                       </div>
                       <div className='text-3xl font-extrabold text-accent'>
                         {pkg.price ?? 'Get a quote'}
