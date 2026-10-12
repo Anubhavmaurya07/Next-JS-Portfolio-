@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bawa Fitness | Gym in Rathodi, Malad West</title>
+<meta name="description" content="Bawa Fitness, Rathodi, Malad West: premium strength and cardio equipment, certified trainers and personal training. Open Monday to Saturday, 6 am to 11 pm.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#14171b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* Concept: the page loads a barbell. Each section adds a pair of competition plates;
+     the fixed counter shows the weight on the bar. */
+  :root {
+    --iron: #14171b;      /* graphite, the gym floor */
+    --iron-2: #1b1f25;    /* panels */
+    --iron-3: #262b33;    /* raised surfaces */
+    --chalk: #ecebe6;     /* text */
+    --steel: #9aa1aa;     /* secondary text */
+    --red: #e2313f;       /* competition 25 kg red: the one accent */
+    --line: rgba(236, 235, 230, 0.12);
+    --p25: #d0262f; --p20: #2453c4; --p15: #e3ad12; --p10: #2f9a4a;
+    --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --body: "Barlow", "Segoe UI", system-ui, sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--iron); }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-smooth iframe { pointer-events: none; }
+  body {
+    margin: 0; color: var(--chalk); font: 400 17px/1.6 var(--body);
+    background: radial-gradient(1100px 760px at 72% 38%, #232a33 0%, var(--iron) 62%) fixed, var(--iron);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 0.92; margin: 0; letter-spacing: 0.005em; text-wrap: balance; }
+  p { margin: 0; }
+  :focus-visible { outline: 3px solid var(--red); outline-offset: 3px; border-radius: 4px; }
+
+  /* 3D stage */
+  #bar3d { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; display: block; }
+  .no-webgl #bar3d { display: none; }
+
+  .preview-bar { position: relative; z-index: 3; background: var(--chalk); color: var(--iron); font-size: 13px; font-weight: 600; text-align: center; padding: 7px 16px; }
+
+  /* nav */
+  .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px clamp(16px, 4vw, 48px); background: rgba(20, 23, 27, 0.72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .brand { font-family: var(--display); font-weight: 900; font-size: 1.6rem; letter-spacing: 0.04em; text-decoration: none; line-height: 1; }
+  .brand span { color: var(--red); }
+  .nav-links { display: flex; gap: 26px; font-weight: 500; font-size: 15px; }
+  .nav-links a { text-decoration: none; color: var(--steel); }
+  .nav-links a:hover { color: var(--chalk); }
+  @media (max-width: 860px) { .nav-links { display: none; } }
+
+  .btn { display: inline-flex; align-items: center; gap: 10px; font: 700 15px/1 var(--body); letter-spacing: 0.02em; text-decoration: none; padding: 14px 20px; border-radius: 4px; border: 1.5px solid transparent; cursor: pointer; transition: transform .2s ease, background .2s ease; }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-red:hover { background: #f03b49; transform: translateY(-1px); }
+  .btn-line { border-color: rgba(236,235,230,.35); color: var(--chalk); }
+  .btn-line:hover { border-color: var(--chalk); }
+  .btn-sm { padding: 10px 14px; font-size: 14px; }
+
+  main, footer { position: relative; z-index: 1; }
+
+  /* weight counter */
+  .load { position: fixed; z-index: 3; right: clamp(16px, 3vw, 40px); bottom: calc(clamp(16px, 3vw, 36px) + env(safe-area-inset-bottom, 0px)); display: grid; grid-template-columns: auto auto; align-items: baseline; column-gap: 6px; text-align: right; pointer-events: none; }
+  .load-n { font-family: var(--display); font-weight: 900; font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 0.85; font-variant-numeric: tabular-nums; min-width: 3ch; }
+  .load-u { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--steel); }
+  .load-l { grid-column: 1 / -1; font-size: 13px; color: var(--steel); font-weight: 500; }
+  .load-plates { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 4px; margin-top: 8px; }
+  .load-plates i { width: 7px; height: 22px; border-radius: 2px; background: var(--iron-3); transition: background .4s ease, transform .4s ease; }
+  .load-plates i.on { transform: scaleY(1.15); }
+
+  /* hero */
+  .hero { min-height: calc(100svh - 60px); display: flex; flex-direction: column; justify-content: flex-start; padding: clamp(28px, 7vh, 80px) clamp(16px, 4vw, 48px) 0; }
+  .hero h1 { font-size: clamp(4.4rem, 15vw, 13rem); text-transform: uppercase; font-weight: 900; perspective: 900px; line-height: 0.84; }
+  .hero h1 .char { display: inline-block; transform-origin: 50% 100% -40px; will-change: transform; }
+  .hero-sub { max-width: 40ch; margin-top: 22px; font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: #d5d5cf; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 18px; color: var(--steel); font-size: 15px; font-weight: 500; }
+  .hero-meta b { color: var(--chalk); font-weight: 700; }
+  .stars { color: #f2c14e; letter-spacing: 1px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .scroll-hint { margin-top: auto; padding-bottom: 28px; color: var(--steel); font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+  .scroll-hint::before { content: ""; width: 34px; height: 1.5px; background: var(--steel); }
+
+  /* scrolling panels: copy on the left, the bar on the right */
+  .panel { position: relative; min-height: 105vh; display: flex; align-items: center; padding: 14vh clamp(16px, 4vw, 48px); }
+  .panel::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,23,27,.94) 0%, rgba(20,23,27,.78) 38%, rgba(20,23,27,0) 62%); pointer-events: none; }
+  .panel-inner { position: relative; width: min(560px, 100%); display: grid; gap: 20px; }
+  .added { display: inline-flex; align-items: center; gap: 10px; font: 700 14px/1 var(--body); color: var(--steel); }
+  .added i { width: 12px; height: 30px; border-radius: 2px; background: var(--c); box-shadow: 16px 0 0 var(--c); margin-right: 16px; }
+  .panel h2 { font-size: clamp(3rem, 6.4vw, 5.6rem); }
+  .panel .lede { font-size: 1.15rem; color: #d5d5cf; max-width: 46ch; }
+  .facts { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .facts li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: baseline; padding: 15px 0; border-bottom: 1px solid var(--line); }
+  .facts b { font-family: var(--display); font-weight: 800; font-size: 1.55rem; letter-spacing: 0.01em; line-height: 1; }
+  .facts span { color: var(--steel); font-size: 15px; text-align: right; }
+  blockquote.pull { margin: 0; padding-left: 18px; border-left: 3px solid var(--red); font-size: 1.15rem; font-style: italic; color: #e3e2dc; }
+  blockquote.pull cite { display: block; margin-top: 6px; font-style: normal; font-size: 14px; color: var(--steel); }
+
+  /* plans */
+  .plans { list-style: none; margin: 4px 0 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
+  .plans li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .plans h3 { font-size: 1.9rem; }
+  .plans small { display: block; color: var(--steel); font-size: 14px; margin-top: 4px; }
+  .price { font-family: var(--display); font-weight: 800; font-size: 1.7rem; font-variant-numeric: tabular-nums; }
+  .price.tbc { font-family: var(--body); font-size: 13px; font-weight: 600; color: var(--steel); border: 1px dashed rgba(236,235,230,.35); padding: 6px 10px; border-radius: 4px; }
+  .plans li.best h3::after { content: "Best value"; margin-left: 10px; vertical-align: middle; font: 700 11px/1 var(--body); letter-spacing: 0.04em; background: var(--red); color: #fff; padding: 4px 7px; border-radius: 3px; position: relative; top: -4px; }
+
+  /* reviews */
+  .score { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .score b { font-family: var(--display); font-weight: 900; font-size: clamp(4.5rem, 10vw, 7rem); line-height: 0.8; }
+  .score span { color: var(--steel); font-weight: 500; }
+  .quotes { display: grid; gap: 18px; margin-top: 4px; }
+
+  /* visit */
+  .hours { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .hours th, .hours td { text-align: left; padding: 10px 0; border-bottom: 1px solid var(--line); font-weight: 500; }
+  .hours th { color: var(--steel); width: 48%; font-weight: 500; }
+  .hours tr.today th, .hours tr.today td { color: var(--chalk); font-weight: 700; }
+  .hours tr.today td::after { content: " today"; color: var(--red); font-size: 13px; font-weight: 700; }
+  address { font-style: normal; color: #d5d5cf; }
+  .visit-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+  .map { width: 100%; height: 230px; border: 0; border-radius: 6px; filter: grayscale(0.6) contrast(1.05); background: var(--iron-2); }
+
+  /* final */
+  .final { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 0 16px 16vh; }
+  .final h2 { font-size: clamp(3.4rem, 9vw, 8rem); text-transform: uppercase; max-width: 12ch; }
+  .final p { margin-top: 16px; color: #d5d5cf; }
+  .final .btn { margin-top: 26px; }
+
+  footer { padding: 28px clamp(16px, 4vw, 48px) 120px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--steel); font-size: 14px; background: var(--iron); }
+  footer b { color: var(--chalk); font-family: var(--display); font-size: 1.2rem; letter-spacing: 0.04em; }
+
+  /* split-text helpers */
+  .line-mask { overflow: hidden; padding-bottom: 0.06em; }
+
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    .panel { min-height: auto; padding: 46vh 16px 10vh; align-items: flex-end; }
+    .panel::before { background: linear-gradient(180deg, rgba(20,23,27,0) 0%, rgba(20,23,27,0) 34%, rgba(20,23,27,.9) 52%, rgba(20,23,27,.96) 100%); }
+    .hero { min-height: calc(100svh - 58px); }
+    .facts span { text-align: left; }
+    .facts li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .load { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+    .load-l { font-size: 12px; }
+    .final { padding-bottom: 12vh; }
+    footer { padding-bottom: 110px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/clients/bawa-fitness/vendor/three.module.min.js",
+  "three/addons/": "/clients/bawa-fitness/vendor/addons/"
+} }
+</script>
+</head>
+<body>
+
+<div class="preview-bar" role="note">Draft preview for Bawa Fitness, made by Anubhav Maurya. Photos and prices will be added.</div>
+
+<canvas id="bar3d" aria-hidden="true"></canvas>
+
+<div class="load" aria-hidden="true">
+  <span class="load-n" id="kg">20</span><span class="load-u">kg</span>
+  <span class="load-l" id="kg-label">empty bar</span>
+  <span class="load-plates" id="kg-plates"><i></i><i></i><i></i><i></i></span>
+</div>
+
+<header class="nav">
+  <a class="brand" href="#top" aria-label="Bawa Fitness, back to top">BAWA<span>.</span>FITNESS</a>
+  <nav class="nav-links" aria-label="Sections">
+    <a href="#floor">The floor</a>
+    <a href="#training">Training</a>
+    <a href="#plans">Plans</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#visit">Visit</a>
+  </nav>
+  <a class="btn btn-red btn-sm wa" href="#" target="_blank" rel="noopener">Book a trial</a>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <h1 id="hero-title">Load the<br>bar.</h1>
+    <p class="hero-sub" data-rise>Premium strength and cardio equipment, certified trainers and a floor that keeps you coming back. In Rathodi, Malad West.</p>
+    <div class="hero-meta" data-rise>
+      <span><span class="stars" aria-hidden="true">★★★★★</span> <b>4.9</b> from 71 Google reviews</span>
+      <span>Open <b>6 am – 11 pm</b>, Monday to Saturday</span>
+    </div>
+    <div class="hero-cta" data-rise>
+      <a class="btn btn-red wa" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg>
+        Book a trial on WhatsApp
+      </a>
+      <a class="btn btn-line" href="#plans">See plans</a>
+    </div>
+    <p class="scroll-hint" data-rise>Scroll to load the bar</p>
+  </section>
+
+  <section class="panel" id="floor" data-plate="0">
+    <div class="panel-inner">
+      <span class="added" style="--c: var(--p25)"><i></i>2 × 25 kg on</span>
+      <h2 data-lines>The floor members rave about.</h2>
+      <p class="lede">Racks, machines and free weights that members call the best in the area, kept clean every day.</p>
+      <blockquote class="pull">“The most premium equipment in Malad. Best personal training and overall a killer gym vibe!”<cite>Google review</cite></blockquote>
+      <ul class="facts">
+        <li><b>High-end machines</b><span>Strength and cardio</span></li>
+        <li><b>Clean and hygienic</b><span>Every day, every station</span></li>
+        <li><b>Safe for women</b><span>“Friendly and secure for girls”</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="panel" id="training" data-plate="1">
+    <div class="panel-inner">
+      <span class="added" style="--c: var(--p20)"><i></i>2 × 20 kg on</span>
+      <h2 data-lines>Train alone, or with a coach.</h2>
+      <p class="lede">Certified trainers on the floor to fix your form, plan your workouts and keep you motivated.</p>
+      <ul class="facts">
+        <li><b>Strength training</b><span>Free weights, racks, machines</span></li>
+        <li><b>Cardio</b><span>Warm up, cut, build stamina</span></li>
+        <li><b>Personal training</b><span>One-to-one plans for your goal</span></li>
+      </ul>
+      <blockquote class="pull">“Everyone is really motivated and the owner is very supportive. Gym equipments are top class.”<cite>Google review</cite></blockquote>
+    </div>
+  </section>
+
+  <section class="panel" id="plans" data-plate="2">
+    <div class="panel-inner">
+      <span class="added" style="--c: var(--p15)"><i></i>2 × 15 kg on</span>
+      <h2 data-lines>Pick your plan.</h2>
+      <p class="lede">Longer plans cost less per month. Ask about a trial session before you join.</p>
+      <ul class="plans">
+        <li><div><h3>Monthly</h3><small>Full gym access</small></div><span class="price tbc">Price to add</span></li>
+        <li><div><h3>Quarterly</h3><small>3 months</small></div><span class="price tbc">Price to add</span></li>
+        <li><div><h3>Half-yearly</h3><small>6 months</small></div><span class="price tbc">Price to add</span></li>
+        <li class="best"><div><h3>Yearly</h3><small>12 months</small></div><span class="price tbc">Price to add</span></li>
+        <li><div><h3>Personal training</h3><small>Add to any plan</small></div><span class="price tbc">Price to add</span></li>
+      </ul>
+      <div><a class="btn btn-red wa" href="#" target="_blank" rel="noopener">Ask about plans on WhatsApp</a></div>
+    </div>
+  </section>
+
+  <section class="panel" id="reviews" data-plate="3">
+    <div class="panel-inner">
+      <span class="added" style="--c: var(--p10)"><i></i>2 × 10 kg on</span>
+      <div class="score"><b>4.9</b><span><span class="stars" aria-hidden="true">★★★★★</span><br>from 71 Google reviews</span></div>
+      <h2 data-lines>Members say it best.</h2>
+      <div class="quotes">
+        <blockquote class="pull">“The first gym I ever joined, and they taught me a lot. The place itself is quite friendly and secure for girls.”<cite>Google review</cite></blockquote>
+        <blockquote class="pull">“Equipped with high-end equipment, machines and certified trainer.”<cite>Google review</cite></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="visit" data-collars>
+    <div class="panel-inner">
+      <span class="added" style="--c: #c9ced6"><i></i>Collars on</span>
+      <h2 data-lines>Come see the floor.</h2>
+      <table class="hours" aria-label="Opening hours">
+        <tbody id="hours">
+          <tr data-days="1,2,3,4,5,6"><th scope="row">Monday to Saturday</th><td>6 am – 11 pm</td></tr>
+          <tr data-days="0"><th scope="row">Sunday</th><td>Closed</td></tr>
+        </tbody>
+      </table>
+      <address>Maa Kripa House, near Bulbul Bungalow,<br>Rathodi, Malad West, Mumbai 400095</address>
+      <div class="visit-cta">
+        <a class="btn btn-line btn-sm" href="https://maps.google.com/?cid=18293303156528752791" target="_blank" rel="noopener">Get directions</a>
+        <a class="btn btn-line btn-sm" href="tel:+918850610724">Call +91 88506 10724</a>
+        <a class="btn btn-line btn-sm" href="https://www.instagram.com/bawafitness.in/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <iframe class="map" title="Map showing Bawa Fitness, Rathodi, Malad West" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Bawa+Fitness,+Rathodi,+Malad+West,+Mumbai&amp;z=16&amp;output=embed"></iframe>
+    </div>
+  </section>
+
+  <section class="final" id="start">
+    <h2 data-lines>Your first lift starts here.</h2>
+    <p>Message us, pick a time, and we'll have the bar ready.</p>
+    <a class="btn btn-red wa" href="#" target="_blank" rel="noopener">Book a trial on WhatsApp</a>
+  </section>
+</main>
+
+<footer>
+  <div><b>BAWA FITNESS</b><br>Rathodi, Malad West, Mumbai</div>
+  <div>Monday to Saturday, 6 am – 11 pm</div>
+  <div>Website by <a href="/">Anubhav Maurya</a></div>
+</footer>
+
+<script src="/clients/bawa-fitness/vendor/lenis.min.js"></script>
+<script src="/clients/bawa-fitness/vendor/gsap.min.js"></script>
+<script src="/clients/bawa-fitness/vendor/ScrollTrigger.min.js"></script>
+<script src="/clients/bawa-fitness/vendor/SplitText.min.js"></script>
+<script>
+  // WhatsApp links and today's hours work even if the 3D scene can't load.
+  (function () {
+    var wa = "https://wa.me/918850610724?text=" + encodeURIComponent("Hi Bawa Fitness, I'd like to book a trial session. What times are available?");
+    document.querySelectorAll("a.wa").forEach(function (a) { a.href = wa; });
+    var d = String(new Date().getDay());
+    document.querySelectorAll("#hours tr").forEach(function (r) {
+      if (r.getAttribute("data-days").split(",").indexOf(d) !== -1) r.classList.add("today");
+    });
+  })();
+</script>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const gsap = window.gsap;
+gsap.registerPlugin(ScrollTrigger, SplitText);
+
+/* ---------- smooth scroll ---------- */
+let lenis = null;
+if (!reduce && window.Lenis) {
+  lenis = new Lenis({ lerp: 0.085, smoothWheel: true });
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((t) => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+}
+document.querySelectorAll('a[href^="#"]').forEach((a) => {
+  a.addEventListener("click", (e) => {
+    const id = a.getAttribute("href");
+    if (id.length < 2) return;
+    const el = document.querySelector(id);
+    if (!el) return;
+    e.preventDefault();
+    if (lenis) lenis.scrollTo(el, { offset: -64, duration: 1.4 });
+    else el.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+  });
+});
+
+/* ---------- weight counter ---------- */
+const PLATES = [
+  { kg: 25, color: 0xc8222c, css: "#d0262f", t: 0.34 },
+  { kg: 20, color: 0x2149b8, css: "#2453c4", t: 0.29 },
+  { kg: 15, color: 0xdca40c, css: "#e3ad12", t: 0.24 },
+  { kg: 10, color: 0x2c9447, css: "#2f9a4a", t: 0.19 },
+];
+const kgEl = document.getElementById("kg");
+const kgLabel = document.getElementById("kg-label");
+const kgPlates = document.querySelectorAll("#kg-plates i");
+const loaded = [false, false, false, false];
+let collarsOn = false;
+const shown = { v: 20 };
+function refreshCounter() {
+  let kg = 20;
+  loaded.forEach((on, i) => {
+    if (on) kg += PLATES[i].kg * 2;
+    kgPlates[i].style.background = on ? PLATES[i].css : "";
+    kgPlates[i].classList.toggle("on", on);
+  });
+  kgLabel.textContent = kg === 20 ? "empty bar" : collarsOn ? "locked in" : "on the bar";
+  gsap.to(shown, { v: kg, duration: reduce ? 0 : 0.7, ease: "power2.out", overwrite: true,
+    onUpdate: () => { kgEl.textContent = Math.round(shown.v); } });
+}
+
+/* ---------- text animation ---------- */
+function animateText() {
+  const title = document.getElementById("hero-title");
+  const rise = gsap.utils.toArray("[data-rise]");
+  if (reduce) return;
+  const split = new SplitText(title, { type: "chars", charsClass: "char" });
+  gsap.set(rise, { autoAlpha: 0, y: 24 });
+  const tl = gsap.timeline({ delay: 0.15 });
+  gsap.set(split.chars, { transformPerspective: 700 });
+  tl.from(split.chars, { rotateX: -100, yPercent: 40, autoAlpha: 0, duration: 1.1, ease: "power4.out", stagger: 0.045 })
+    .to(rise, { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.09 }, "-=0.6");
+
+  gsap.utils.toArray("[data-lines]").forEach((h) => {
+    const s = new SplitText(h, { type: "lines", linesClass: "line", mask: "lines" });
+    gsap.from(s.lines, { yPercent: 110, duration: 1, ease: "power4.out", stagger: 0.08,
+      scrollTrigger: { trigger: h, start: "top 82%", once: true } });
+  });
+  gsap.utils.toArray(".panel-inner").forEach((p) => {
+    const kids = Array.from(p.children).filter((c) => !c.matches("[data-lines]"));
+    gsap.from(kids, { autoAlpha: 0, y: 26, duration: 0.8, ease: "power3.out", stagger: 0.07,
+      scrollTrigger: { trigger: p, start: "top 72%", once: true } });
+  });
+}
+
+/* ---------- 3D barbell ---------- */
+function buildScene() {
+  const canvas = document.getElementById("bar3d");
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
+  } catch (e) {
+    document.documentElement.classList.add("no-webgl");
+    return null;
+  }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+  camera.position.set(0, 0.8, 16);
+
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+  const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(5, 7, 9); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xff3344, 2.6); rim.position.set(-7, 3, -6); scene.add(rim);
+  const fill = new THREE.DirectionalLight(0x8fb2ff, 0.6); fill.position.set(-4, -3, 6); scene.add(fill);
+
+  // materials
+  const chrome = new THREE.MeshStandardMaterial({ color: 0xdfe3e8, metalness: 1, roughness: 0.18 });
+  const satin = new THREE.MeshStandardMaterial({ color: 0xb9c0c9, metalness: 1, roughness: 0.34 });
+  const knurl = (() => {
+    const c = document.createElement("canvas"); c.width = 128; c.height = 128;
+    const g = c.getContext("2d");
+    g.fillStyle = "#6a6a6a"; g.fillRect(0, 0, 128, 128);
+    g.strokeStyle = "#d0d0d0"; g.lineWidth = 3;
+    for (let i = -128; i < 256; i += 10) {
+      g.beginPath(); g.moveTo(i, 0); g.lineTo(i + 128, 128); g.stroke();
+      g.beginPath(); g.moveTo(i + 128, 0); g.lineTo(i, 128); g.stroke();
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 28);
+    return t;
+  })();
+  const shaftMat = new THREE.MeshStandardMaterial({ color: 0xc4cad2, metalness: 1, roughness: 0.42, roughnessMap: knurl, bumpMap: knurl, bumpScale: 0.6 });
+
+  const X = (geo) => geo.rotateZ(Math.PI / 2);   // lay along the x axis
+
+  // outer: mouse tilt + float. stage: scroll position. roll: spin around the bar.
+  // outer: mouse tilt + float. stage: scroll pose. intro: load-in offsets. roll: spin around the bar.
+  const outer = new THREE.Group(); scene.add(outer);
+  const stage = new THREE.Group(); outer.add(stage);
+  const intro = new THREE.Group(); stage.add(intro);
+  const roll = new THREE.Group(); intro.add(roll);
+
+  roll.add(new THREE.Mesh(X(new THREE.CylinderGeometry(0.14, 0.14, 6.2, 40, 1)), shaftMat));
+  const shoulderGeo = X(new THREE.CylinderGeometry(0.42, 0.42, 0.14, 56));
+  const sleeveGeo = X(new THREE.CylinderGeometry(0.25, 0.25, 2.22, 48));
+  const capGeo = X(new THREE.CylinderGeometry(0.27, 0.27, 0.06, 48));
+  const ringGeo = X(new THREE.TorusGeometry(0.255, 0.012, 8, 48));
+  [-1, 1].forEach((s) => {
+    const sh = new THREE.Mesh(shoulderGeo, chrome); sh.position.x = s * 3.17; roll.add(sh);
+    const sl = new THREE.Mesh(sleeveGeo, chrome); sl.position.x = s * 4.35; roll.add(sl);
+    const cap = new THREE.Mesh(capGeo, satin); cap.position.x = s * 5.49; roll.add(cap);
+    for (let k = 0; k < 3; k++) { const r = new THREE.Mesh(ringGeo, satin); r.position.x = s * (3.4 + k * 0.08); roll.add(r); }
+  });
+
+  // plate face labels (drawn once the display font is ready)
+  function labelTexture(kg) {
+    const c = document.createElement("canvas"); c.width = c.height = 512;
+    const g = c.getContext("2d");
+    g.fillStyle = "rgba(255,255,255,0.95)"; g.textAlign = "center"; g.textBaseline = "middle";
+    g.font = '900 150px "Big Shoulders Display", Impact, sans-serif';
+    g.fillText(String(kg), 256, 92);
+    g.font = '800 58px "Big Shoulders Display", Impact, sans-serif';
+    g.fillText("KG", 256, 430);
+    g.font = '800 34px "Barlow", sans-serif';
+    g.save(); g.translate(256, 256); g.rotate(-Math.PI / 2); g.fillText("BAWA FITNESS", 0, -190); g.restore();
+    g.strokeStyle = "rgba(255,255,255,0.35)"; g.lineWidth = 4;
+    g.beginPath(); g.arc(256, 256, 238, 0, Math.PI * 2); g.stroke();
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
+    return t;
+  }
+
+  const R = 1.15, BORE = 0.26, HUB = 0.46;
+  function makePlate(spec, side) {
+    const t = spec.t, h = t / 2;
+    const rubber = new THREE.MeshStandardMaterial({ color: spec.color, roughness: 0.62, metalness: 0.05 });
+    const g = new THREE.Group();
+    const rim = new THREE.Mesh(new THREE.CylinderGeometry(R, R, t, 96, 1, true), rubber);
+    const lip = new THREE.Mesh(new THREE.TorusGeometry(R - 0.02, 0.03, 10, 96), rubber);
+    const faceGeo = new THREE.RingGeometry(HUB, R, 96, 1);
+    const f1 = new THREE.Mesh(faceGeo, rubber); f1.rotation.x = -Math.PI / 2; f1.position.y = h;
+    const f2 = new THREE.Mesh(faceGeo, rubber); f2.rotation.x = Math.PI / 2; f2.position.y = -h;
+    const hubGeo = new THREE.RingGeometry(BORE, HUB, 64, 1);
+    const hub1 = new THREE.Mesh(hubGeo, chrome); hub1.rotation.x = -Math.PI / 2; hub1.position.y = h + 0.004;
+    const hub2 = new THREE.Mesh(hubGeo, chrome); hub2.rotation.x = Math.PI / 2; hub2.position.y = -h - 0.004;
+    const bore = new THREE.Mesh(new THREE.CylinderGeometry(BORE, BORE, t + 0.01, 40, 1, true), new THREE.MeshStandardMaterial({ color: 0x9aa2ac, metalness: 1, roughness: 0.3, side: THREE.BackSide }));
+    const lipTop = lip.clone(); lipTop.rotation.x = Math.PI / 2; lipTop.position.y = h - 0.02;
+    const lipBot = lip.clone(); lipBot.rotation.x = Math.PI / 2; lipBot.position.y = -h + 0.02;
+    g.add(rim, f1, f2, hub1, hub2, bore, lipTop, lipBot);
+    const labelMat = new THREE.MeshStandardMaterial({ transparent: true, roughness: 0.5, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 });
+    const label = new THREE.Mesh(new THREE.CircleGeometry(R * 0.97, 96), labelMat);
+    label.rotation.x = -Math.PI / 2; label.position.y = h + 0.003;  // outward face
+    g.add(label);
+    g.userData.labelMat = labelMat;
+    g.rotation.z = side > 0 ? -Math.PI / 2 : Math.PI / 2;  // plate axis along x, label facing outward
+    return g;
+  }
+
+  const pairs = [];
+  let cursor = 3.25;
+  PLATES.forEach((spec) => {
+    const x = cursor + spec.t / 2;
+    cursor += spec.t + 0.012;
+    const pair = [1, -1].map((side) => {
+      const p = makePlate(spec, side);
+      p.userData.home = side * x;
+      p.position.x = side * x;
+      roll.add(p);
+      return p;
+    });
+    pairs.push({ spec, pair });
+  });
+
+  const collars = [1, -1].map((side) => {
+    const c = new THREE.Group();
+    const body = new THREE.Mesh(X(new THREE.CylinderGeometry(0.36, 0.36, 0.16, 48)), satin);
+    const lever = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.5, 0.08), chrome); lever.position.set(0, 0.42, 0);
+    c.add(body, lever);
+    c.userData.home = side * (cursor + 0.1);
+    c.position.x = c.userData.home;
+    roll.add(c);
+    return c;
+  });
+
+  document.fonts.load('900 150px "Big Shoulders Display"').catch(() => {}).finally(() => {
+    pairs.forEach(({ spec, pair }) => {
+      const tex = labelTexture(spec.kg);
+      pair.forEach((p) => { p.userData.labelMat.map = tex; p.userData.labelMat.needsUpdate = true; });
+    });
+  });
+
+  // soft floor shadow
+  const shadowTex = (() => {
+    const c = document.createElement("canvas"); c.width = 256; c.height = 64;
+    const g = c.getContext("2d");
+    const grd = g.createRadialGradient(128, 32, 4, 128, 32, 120);
+    grd.addColorStop(0, "rgba(0,0,0,0.55)"); grd.addColorStop(1, "rgba(0,0,0,0)");
+    g.fillStyle = grd; g.fillRect(0, 0, 256, 64);
+    return new THREE.CanvasTexture(c);
+  })();
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(13, 3.2), new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = -1.45;
+  stage.add(shadow);
+
+  return { renderer, scene, camera, outer, stage, intro, roll, pairs, collars, shadow };
+}
+
+/* layouts per screen size */
+function layout() {
+  const w = window.innerWidth, h = window.innerHeight, phone = w < 760;
+  return {
+    phone,
+    camZ: phone ? 24 : w < 1100 ? 19 : 16,
+    hero:  phone ? { x: 0, y: -2.9, rx: 0.22, ry: -0.5, rz: 0.06, s: 0.78 }
+                 : { x: 0.6, y: -2.35, rx: 0.2, ry: -0.32, rz: 0.04, s: 1 },
+    side:  phone ? { x: 0, y: 2.7, rx: 0.35, ry: -1.0, rz: 0.12, s: 0.8 }
+                 : { x: 3.4, y: 0.1, rx: 0.3, ry: -0.95, rz: 0.1, s: 0.9 },
+    final: phone ? { x: 0, y: 2.2, rx: 0.12, ry: -0.18, rz: 0, s: 0.72 }
+                 : { x: 0, y: 1.5, rx: 0.12, ry: -0.12, rz: 0, s: 1 },
+  };
+}
+
+function applyPose(stage, p) {
+  stage.position.set(p.x, p.y, 0);
+  stage.rotation.set(p.rx, p.ry, p.rz);
+  stage.scale.setScalar(p.s);
+}
+
+function run() {
+  const S = buildScene();
+  animateText();
+
+  if (!S) {
+    // no 3D: keep the counter honest by tying it to scroll
+    document.querySelectorAll("[data-plate]").forEach((sec) => {
+      const i = +sec.dataset.plate;
+      ScrollTrigger.create({ trigger: sec, start: "top 55%", onEnter: () => { loaded[i] = true; refreshCounter(); }, onLeaveBack: () => { loaded[i] = false; refreshCounter(); } });
+    });
+    return;
+  }
+
+  const { renderer, scene, camera, outer, stage, intro, roll, pairs, collars, shadow } = S;
+  let L = layout();
+
+  function resize() {
+    L = layout();
+    const w = window.innerWidth, h = window.innerHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.position.z = L.camZ;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+
+  // start state: plates and collars off the bar
+  pairs.forEach(({ pair }) => pair.forEach((p) => { p.position.x = p.userData.home * 1.9; p.position.y = 2.6; p.visible = false; }));
+  collars.forEach((c) => { c.position.x = c.userData.home * 1.6; c.visible = false; });
+
+  if (reduce) {
+    pairs.forEach(({ pair }, i) => { loaded[i] = true; pair.forEach((p) => { p.position.x = p.userData.home; p.position.y = 0; p.visible = true; }); });
+    collars.forEach((c) => { c.position.x = c.userData.home; c.visible = true; });
+    collarsOn = true;
+    applyPose(stage, L.side);
+    refreshCounter();
+    renderer.render(scene, camera);
+    window.addEventListener("resize", () => { resize(); applyPose(stage, L.side); renderer.render(scene, camera); });
+    return;
+  }
+
+  // intro: the bar swings in from depth
+  applyPose(stage, L.hero);
+  gsap.from(intro.position, { z: -14, y: -1.5, duration: 1.9, ease: "power3.out" });
+  gsap.from(intro.rotation, { y: -2.4, x: 0.6, z: -0.5, duration: 2.1, ease: "power3.out" });
+
+  // hero -> side, side -> final, all scrubbed
+  const pose = (key) => ({ x: () => L[key].x, y: () => L[key].y, z: 0 });
+  const rot = (key) => ({ x: () => L[key].rx, y: () => L[key].ry, z: () => L[key].rz });
+  const scl = (key) => ({ x: () => L[key].s, y: () => L[key].s, z: () => L[key].s });
+  const st = (trigger, start, end) => ({ trigger, start, end, scrub: 1.2, invalidateOnRefresh: true });
+
+  const toSide = gsap.timeline({ scrollTrigger: st("#floor", "top bottom", "top 35%") });
+  toSide.fromTo(stage.position, pose("hero"), { ...pose("side"), ease: "none" }, 0)
+        .fromTo(stage.rotation, rot("hero"), { ...rot("side"), ease: "none" }, 0)
+        .fromTo(stage.scale, scl("hero"), { ...scl("side"), ease: "none" }, 0)
+        .fromTo(shadow.material, { opacity: 1 }, { opacity: 0, ease: "none" }, 0);
+
+  const toFinal = gsap.timeline({ scrollTrigger: st("#start", "top bottom", "top 20%") });
+  toFinal.fromTo(stage.position, pose("side"), { ...pose("final"), ease: "none", immediateRender: false }, 0)
+         .fromTo(stage.rotation, rot("side"), { ...rot("final"), ease: "none", immediateRender: false }, 0)
+         .fromTo(stage.scale, scl("side"), { ...scl("final"), ease: "none", immediateRender: false }, 0);
+
+  // the bar rolls slowly as you read
+  gsap.fromTo(roll.rotation, { x: 0 }, { x: Math.PI * 2.5, ease: "none", scrollTrigger: { trigger: "main", start: "top top", end: "bottom bottom", scrub: 1.6 } });
+
+  // each section loads a pair of plates
+  document.querySelectorAll("[data-plate]").forEach((sec) => {
+    const i = +sec.dataset.plate;
+    const { pair } = pairs[i];
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sec, start: "top 85%", end: "top 30%", scrub: 1,
+        onUpdate: (self) => {
+          pair.forEach((p) => { p.visible = self.progress > 0.02; });
+          const on = self.progress > 0.92;
+          if (on !== loaded[i]) { loaded[i] = on; refreshCounter(); }
+        },
+      },
+    });
+    pair.forEach((p, k) => {
+      tl.fromTo(p.position, { x: p.userData.home * 1.9, y: 2.6 }, { x: p.userData.home, y: 0, ease: "power3.out", duration: 1 }, k * 0.08)
+        .fromTo(p.rotation, { y: (k ? -1 : 1) * 1.2 }, { y: 0, ease: "power3.out", duration: 1 }, k * 0.08);
+    });
+  });
+
+  // collars clamp on in the visit section
+  const ctl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#visit", start: "top 80%", end: "top 40%", scrub: 1,
+      onUpdate: (self) => {
+        collars.forEach((c) => { c.visible = self.progress > 0.02; });
+        const on = self.progress > 0.9; if (on !== collarsOn) { collarsOn = on; refreshCounter(); }
+      },
+    },
+  });
+  collars.forEach((c) => {
+    ctl.fromTo(c.position, { x: c.userData.home * 1.6 }, { x: c.userData.home, ease: "back.out(2)", duration: 1 }, 0)
+       .fromTo(c.rotation, { x: -2 }, { x: 0, ease: "power2.out", duration: 1 }, 0);
+  });
+
+  // mouse tilt and idle float
+  const pointer = { x: 0, y: 0 };
+  window.addEventListener("pointermove", (e) => {
+    pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
+  }, { passive: true });
+
+  let visible = true;
+  document.addEventListener("visibilitychange", () => { visible = !document.hidden; });
+  const clock = new THREE.Clock();
+  gsap.ticker.add(() => {
+    if (!visible) return;
+    const t = clock.getElapsedTime();
+    outer.rotation.y += (pointer.x * 0.18 - outer.rotation.y) * 0.05;
+    outer.rotation.x += (pointer.y * 0.1 - outer.rotation.x) * 0.05;
+    outer.position.y = Math.sin(t * 1.1) * 0.08;
+    renderer.render(scene, camera);
+  });
+
+  let rt;
+  window.addEventListener("resize", () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => { resize(); ScrollTrigger.refresh(); }, 120);
+  });
+  refreshCounter();
+}
+
+document.fonts.ready.then(run, run);
+</script>
+</body>
+</html>
