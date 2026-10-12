@@ -17,18 +17,17 @@ export default function Home() {
 
           {/* text */}
           <div className="text-center xl:text-left order-2 xl:order-none">
-            <span className="text-xl">Websites &amp; Software for Businesses</span>
+            <span className="text-xl">Websites, Apps &amp; Software for Every Business</span>
             <h1 className="h1 mb-6">
               Hello I&apos;m <br /> <span className="text-accent">
                 <Typewriter />
               </span>
             </h1>
             <p className="max-w-[540px] mb-9 text-white/80">
-              I build fast, mobile-friendly websites that bring you enquiries —
-              and the custom software that keeps a business running, like
-              booking systems, CRMs and billing dashboards. Software I built is
-              used every day by a travel company across five branches in three
-              countries.
+              I build websites, mobile apps and custom software for every kind
+              of business — shops, clinics, restaurants, schools and startups.
+              Software I built is used every day by a travel company across
+              five branches in three countries.
             </p>
             {/* buttons and socials */}
             <div className="flex flex-col xl:flex-row items-center gap-6 xl:gap-8">

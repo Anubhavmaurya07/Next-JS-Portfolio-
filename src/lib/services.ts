@@ -5,6 +5,7 @@
 export const SERVICE_OPTIONS = [
   "Business Website",
   "Personal / Portfolio Website",
+  "Mobile App",
   "Custom Software (CRM, booking, dashboard)",
   "Website Care & Updates",
   "Something else",
@@ -25,15 +26,15 @@ export const services: {
     num: "01",
     title: "Business Websites",
     description:
-      "A fast, mobile-friendly website that makes your business look trustworthy and turns visitors into calls and WhatsApp enquiries. Made for shops, clinics, salons, restaurants, gyms and coaching classes — with Google Maps, an enquiry form and a WhatsApp button built in.",
+      "A fast, mobile-friendly website — or a simple online store — that makes your business look trustworthy and turns visitors into calls, WhatsApp enquiries and orders. For any kind of business: shops, clinics, restaurants, salons, gyms, schools and offices — with Google Maps, an enquiry form and a WhatsApp button built in.",
     service: "Business Website",
   },
   {
     num: "02",
-    title: "Personal & Portfolio Websites",
+    title: "Mobile Apps",
     description:
-      "One link that shows who you are and what you've done — for doctors, lawyers, coaches, creators and job seekers. Your work, reviews and contact details in a clean site you can share on WhatsApp, LinkedIn and Instagram. (You're looking at one.)",
-    service: "Personal / Portfolio Website",
+      "Android and iPhone apps for your customers or your team — bookings, orders, loyalty points, staff attendance or team chat. One codebase runs on both kinds of phone, so it costs less to build and maintain. I've built and published a staff app on the Play Store that's used across branches in three countries.",
+    service: "Mobile App",
   },
   {
     num: "03",
@@ -44,9 +45,16 @@ export const services: {
   },
   {
     num: "04",
-    title: "Website Care & Updates",
+    title: "Personal & Portfolio Websites",
     description:
-      "Your website kept fast, secure and up to date without you thinking about it — content and price changes, new pages, backups, hosting and domain renewals, and quick fixes, on a simple monthly plan.",
+      "One link that shows who you are and what you've done — for doctors, lawyers, coaches, creators and job seekers. Your work, reviews and contact details in a clean site you can share on WhatsApp, LinkedIn and Instagram. (You're looking at one.)",
+    service: "Personal / Portfolio Website",
+  },
+  {
+    num: "05",
+    title: "Website & App Care",
+    description:
+      "Your website or app kept fast, secure and up to date without you thinking about it — content and price changes, new pages, backups, hosting and domain renewals, and quick fixes, on a simple monthly plan.",
     service: "Website Care & Updates",
   },
 ];
@@ -89,11 +97,11 @@ export const packages: {
     service: "Business Website",
   },
   {
-    name: "Custom Software",
+    name: "Custom Software & Apps",
     forWho: "For a business that has outgrown Excel sheets and WhatsApp groups.",
     price: null,
     features: [
-      "Booking system, CRM, billing or admin dashboard",
+      "Mobile app, booking system, CRM or admin dashboard",
       "Built around how your team actually works",
       "Staff logins with the right access for each role",
       "Reports you can download any time",

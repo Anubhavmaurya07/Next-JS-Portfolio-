@@ -21,17 +21,23 @@ export default function Services() {
               <div className='mb-12 xl:mb-16 max-w-[620px]'>
                 <h1 className='h2 mb-4'>What I can build for you<span className='text-accent'>.</span></h1>
                 <p className='text-white/60'>
-                  From a simple website that brings in enquiries to the software
-                  your whole team works in — built properly, explained simply,
-                  and looked after once it&apos;s live.
+                  Whatever your business — a shop, clinic, restaurant, school,
+                  office or startup — I can build what it needs: a website, an
+                  app, or the software your team works in. Built properly,
+                  explained simply, and looked after once it&apos;s live.
                 </p>
               </div>
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-[60px]'>
               {
-                services.map((service) => (
+                services.map((service, index) => (
                   <div key={service.num}
-                    className='flex-1 flex flex-col justify-center gap-6 group'
+                    className={`flex-1 flex flex-col justify-center gap-6 group ${
+                      // an odd last card spans the full row instead of sitting alone
+                      index === services.length - 1 && services.length % 2 === 1
+                        ? 'md:col-span-2'
+                        : ''
+                    }`}
                   >
                     {/* top */}
                     <div className='flex w-full justify-between items-center'>
