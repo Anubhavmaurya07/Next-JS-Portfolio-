@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "What I do",
+  title: "Services & Packages",
   description:
-    "Backend and API engineering, full-stack product development, systems integration and performance work — by Anubhav Maurya.",
+    "Business websites, personal and portfolio sites, custom software like booking systems and CRMs, and website care plans — by Anubhav Maurya, Mumbai.",
   alternates: { canonical: "/services" },
 };
 

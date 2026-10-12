@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import PageTransition from "@/components/PageTransition";
 import StairTransition from "@/components/StairTransition";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import ReactQueryProvider from "@/lib/ReactQueryProvider";
 import { siteConfig } from "@/lib/site";
 import { Analytics } from "@vercel/analytics/react";
@@ -25,6 +26,11 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   keywords: [
     "Anubhav Maurya",
+    "Website Developer Mumbai",
+    "Freelance Web Developer",
+    "Business Website Design",
+    "Portfolio Website",
+    "Custom Software Development",
     "Full Stack Developer",
     "MERN Stack Developer",
     "Next.js Developer",
@@ -100,6 +106,7 @@ export default function RootLayout({
             {children}
           </PageTransition>
         </ReactQueryProvider>
+        <WhatsAppButton />
         <Analytics />
         <SpeedInsights />
       </body>
