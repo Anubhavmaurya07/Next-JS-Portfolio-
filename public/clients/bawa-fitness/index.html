@@ -76,8 +76,11 @@
   .load-plates i.on { transform: scaleY(1.15); }
 
   /* hero */
-  .hero { min-height: calc(100svh - 60px); display: flex; flex-direction: column; justify-content: flex-start; padding: clamp(28px, 7vh, 80px) clamp(16px, 4vw, 48px) 0; }
+  .hero { position: relative; min-height: calc(100svh - 60px); display: flex; flex-direction: column; justify-content: flex-start; padding: clamp(28px, 7vh, 80px) clamp(16px, 4vw, 48px) 0; }
+  .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,23,27,.82) 0%, rgba(20,23,27,.5) 34%, rgba(20,23,27,0) 56%); pointer-events: none; }
+  .hero > * { position: relative; }
   .hero h1 { font-size: clamp(4.4rem, 15vw, 13rem); text-transform: uppercase; font-weight: 900; perspective: 900px; line-height: 0.84; }
+  .hero h1 .word { display: inline-block; white-space: nowrap; }
   .hero h1 .char { display: inline-block; transform-origin: 50% 100% -40px; will-change: transform; }
   .hero-sub { max-width: 40ch; margin-top: 22px; font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: #d5d5cf; }
   .hero-meta { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 18px; color: var(--steel); font-size: 15px; font-weight: 500; }
@@ -129,7 +132,7 @@
 
   /* final */
   .final { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 0 16px 16vh; }
-  .final h2 { font-size: clamp(3.4rem, 9vw, 8rem); text-transform: uppercase; max-width: 12ch; }
+  .final h2 { font-size: clamp(3.2rem, 7vw, 6.4rem); text-transform: uppercase; max-width: 12ch; }
   .final p { margin-top: 16px; color: #d5d5cf; }
   .final .btn { margin-top: 26px; }
 
@@ -142,12 +145,19 @@
   @media (max-width: 760px) {
     body { font-size: 16px; }
     .panel { min-height: auto; padding: 46vh 16px 10vh; align-items: flex-end; }
-    .panel::before { background: linear-gradient(180deg, rgba(20,23,27,0) 0%, rgba(20,23,27,0) 34%, rgba(20,23,27,.9) 52%, rgba(20,23,27,.96) 100%); }
+    .panel::before { background: linear-gradient(180deg, rgba(20,23,27,0) 0%, rgba(20,23,27,0) 32%, rgba(20,23,27,.9) 50%, rgba(20,23,27,.92) 88%, rgba(20,23,27,0) 100%); }
+    .hero::before { background: none; }
     .hero { min-height: calc(100svh - 58px); }
     .facts span { text-align: left; }
     .facts li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
-    .load { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
-    .load-l { font-size: 12px; }
+    .load { top: calc(72px + env(safe-area-inset-top, 0px)); bottom: auto; right: 12px; background: rgba(20,23,27,.78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px 9px; }
+    .load-n { font-size: 2rem; }
+    .load-u { font-size: 1rem; }
+    .load-l { font-size: 11px; }
+    .load-plates { margin-top: 5px; }
+    .load { opacity: 0; transform: translateY(-6px); transition: opacity .35s ease, transform .35s ease; }
+    .load.show { opacity: 1; transform: none; }
+    .load-plates i { width: 5px; height: 14px; }
     .final { padding-bottom: 12vh; }
     footer { padding-bottom: 110px; }
   }
@@ -359,12 +369,15 @@ function refreshCounter() {
     onUpdate: () => { kgEl.textContent = Math.round(shown.v); } });
 }
 
+// on phones the counter appears once the first plates are coming
+ScrollTrigger.create({ trigger: "#floor", start: "top 90%", toggleClass: { targets: ".load", className: "show" }, end: "max" });
+
 /* ---------- text animation ---------- */
 function animateText() {
   const title = document.getElementById("hero-title");
   const rise = gsap.utils.toArray("[data-rise]");
   if (reduce) return;
-  const split = new SplitText(title, { type: "chars", charsClass: "char" });
+  const split = new SplitText(title, { type: "words,chars", wordsClass: "word", charsClass: "char" });
   gsap.set(rise, { autoAlpha: 0, y: 24 });
   const tl = gsap.timeline({ delay: 0.15 });
   gsap.set(split.chars, { transformPerspective: 700 });
@@ -545,12 +558,12 @@ function layout() {
   return {
     phone,
     camZ: phone ? 24 : w < 1100 ? 19 : 16,
-    hero:  phone ? { x: 0, y: -2.9, rx: 0.22, ry: -0.5, rz: 0.06, s: 0.78 }
-                 : { x: 0.6, y: -2.35, rx: 0.2, ry: -0.32, rz: 0.04, s: 1 },
+    hero:  phone ? { x: 0.3, y: -4.45, rx: 0.22, ry: -0.5, rz: 0.08, s: 0.72 }
+                 : { x: 2.9, y: -1.3, rx: 0.2, ry: -0.62, rz: 0.12, s: 1.02 },
     side:  phone ? { x: 0, y: 2.7, rx: 0.35, ry: -1.0, rz: 0.12, s: 0.8 }
-                 : { x: 3.4, y: 0.1, rx: 0.3, ry: -0.95, rz: 0.1, s: 0.9 },
-    final: phone ? { x: 0, y: 2.2, rx: 0.12, ry: -0.18, rz: 0, s: 0.72 }
-                 : { x: 0, y: 1.5, rx: 0.12, ry: -0.12, rz: 0, s: 1 },
+                 : { x: 2.9, y: 0.1, rx: 0.3, ry: -0.95, rz: 0.1, s: 0.8 },
+    final: phone ? { x: 0, y: 2.6, rx: 0.16, ry: -0.62, rz: 0.1, s: 0.6 }
+                 : { x: 0, y: 2.65, rx: 0.14, ry: -0.14, rz: 0, s: 0.84 },
   };
 }
 
