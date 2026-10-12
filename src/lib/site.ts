@@ -62,11 +62,11 @@ export const companiesWorkedWith = 4; // Travkings, Binny's, Xircls, Digilateral
 export const countriesInUse = 3; // KBiz-360 runs five branches in three countries
 export const technologyCount = 12; // matches the skills grid on /resume
 
-// Start of professional experience — the first role on the CV (Digilateral
-// internship, Jan 2024), so the "years of experience" figure matches the
-// dates a client or recruiter can check. If there was paid work before this,
-// add it to the resume and move this date back to match.
-export const CAREER_START = new Date(2024, 0, 1);
+// Start of professional experience (Jan 2023). This predates the earliest role
+// on the CV (Digilateral, Jan 2024), so it is worth listing the 2023 work on
+// the resume too — then the "3+ years" figure matches the dates a client or
+// recruiter can see.
+export const CAREER_START = new Date(2023, 0, 1);
 
 export const yearsOfExperience = (from: Date = CAREER_START) => {
   const now = new Date();
